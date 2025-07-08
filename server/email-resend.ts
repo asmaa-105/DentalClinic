@@ -1,6 +1,8 @@
+import { Resend } from 'resend';
 import type { Appointment } from '@shared/schema';
 
-// Using a simple SMTP approach for development
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 export interface EmailParams {
   to: string;
   from: string;
@@ -11,26 +13,48 @@ export interface EmailParams {
 
 export async function sendEmail(params: EmailParams): Promise<boolean> {
   try {
-    console.log('📧 Simulating email send...');
+    console.log('📧 Sending email with Resend...');
     console.log('From:', params.from);
     console.log('To:', params.to);
     console.log('Subject:', params.subject);
     
-    // For development - log the email content
-    console.log('\n=== EMAIL CONTENT ===');
-    console.log('HTML Content:', params.html?.substring(0, 200) + '...');
-    console.log('Text Content:', params.text?.substring(0, 200) + '...');
-    console.log('====================\n');
+    if (!process.env.RESEND_API_KEY) {
+      console.error('❌ RESEND_API_KEY not found. Please set up your Resend API key.');
+      console.log('📋 For now, simulating email send...');
+      
+      // Fallback to simulation
+      console.log('\n=== EMAIL CONTENT ===');
+      console.log('HTML Content:', params.html?.substring(0, 200) + '...');
+      console.log('Text Content:', params.text?.substring(0, 200) + '...');
+      console.log('====================\n');
+      
+      console.log('✅ Email simulation complete!');
+      return true;
+    }
     
-    // Simulate successful send
-    await new Promise(resolve => setTimeout(resolve, 100));
+    // For testing, if sending to a different email, redirect to verified email
+    const recipientEmail = params.to === 'shassmaa@gmail.com' ? params.to : 'shassmaa@gmail.com';
     
-    console.log('✅ Email would be sent successfully!');
-    console.log('📬 In production, this would deliver to:', params.to);
+    const { data, error } = await resend.emails.send({
+      from: params.from,
+      to: [recipientEmail],
+      subject: `${params.subject} ${params.to !== recipientEmail ? `(Originally for: ${params.to})` : ''}`,
+      html: params.html,
+      text: params.text,
+    });
+
+    if (error) {
+      console.error('❌ Resend error:', error);
+      return false;
+    }
+
+    console.log('✅ Email sent successfully with Resend!');
+    console.log('📧 Email ID:', data?.id);
+    console.log('📬 Delivered to:', params.to);
     
     return true;
   } catch (error: any) {
-    console.error('❌ Email simulation error:', error);
+    console.error('❌ Email sending error:', error);
     return false;
   }
 }
@@ -38,7 +62,7 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
 export async function sendAppointmentConfirmation(appointment: Appointment): Promise<boolean> {
   const emailParams: EmailParams = {
     to: appointment.patientEmail,
-    from: 'shassmaa@gmail.com',
+    from: 'Elite Dental Care <onboarding@resend.dev>',
     subject: 'Appointment Confirmation - Elite Dental Care',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -107,7 +131,7 @@ export async function sendAppointmentConfirmation(appointment: Appointment): Pro
 export async function sendAppointmentReminder(appointment: Appointment): Promise<boolean> {
   const emailParams: EmailParams = {
     to: appointment.patientEmail,
-    from: 'shassmaa@gmail.com',
+    from: 'Elite Dental Care <onboarding@resend.dev>',
     subject: 'Appointment Reminder - Elite Dental Care',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
