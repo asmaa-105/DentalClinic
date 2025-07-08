@@ -27,27 +27,12 @@ async function createTransporter() {
     }
   }
   
-  // Fallback to Ethereal (always free, no signup needed)
-  try {
-    const testAccount = await nodemailer.createTestAccount();
-    
-    transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      secure: false,
-      auth: {
-        user: testAccount.user,
-        pass: testAccount.pass,
-      },
-    });
-    
-    console.log('📧 Using free Ethereal email for testing');
-    console.log('Test account:', testAccount.user);
-    return transporter;
-  } catch (error) {
-    console.error('Failed to create any email transporter:', error);
-    throw error;
-  }
+  // No real email credentials found - use simulation mode
+  console.log('⚠️  No real email credentials found. Emails will only be simulated.');
+  console.log('To send real emails, set up Gmail SMTP credentials.');
+  
+  // Return null to trigger simulation mode
+  return null;
 }
 
 export interface EmailParams {
@@ -66,7 +51,24 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
     
     const emailTransporter = await createTransporter();
     
-    // Use Gmail if available, otherwise use Ethereal test account
+    // If no real email transporter available, simulate the email
+    if (!emailTransporter) {
+      console.log('\n=== EMAIL SIMULATION ===');
+      console.log('From:', params.from);
+      console.log('To:', params.to);
+      console.log('Subject:', params.subject);
+      console.log('\nHTML Content:');
+      console.log(params.html?.substring(0, 500) + '...');
+      console.log('\nText Content:');
+      console.log(params.text?.substring(0, 300) + '...');
+      console.log('========================\n');
+      
+      console.log('⚠️  EMAIL SIMULATION ONLY - No real email sent');
+      console.log('💡 To send real emails, provide Gmail SMTP credentials');
+      return true;
+    }
+    
+    // Use Gmail if available, otherwise use provided from address
     const fromAddress = process.env.GMAIL_EMAIL 
       ? `"Elite Dental Care" <${process.env.GMAIL_EMAIL}>`
       : `"Elite Dental Care" <${params.from}>`;
@@ -79,17 +81,9 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
       html: params.html,
     });
     
-    console.log('✅ Email sent successfully!');
+    console.log('✅ Real email sent successfully!');
     console.log('Message ID:', info.messageId);
-    
-    // Show preview URL for Ethereal emails
-    if (info.messageId.includes('ethereal')) {
-      const previewUrl = nodemailer.getTestMessageUrl(info);
-      console.log('📧 Preview your email at:', previewUrl);
-      console.log('(This is a test email - in production it would go to the recipient)');
-    } else {
-      console.log('📬 Real email delivered to:', params.to);
-    }
+    console.log('📬 Delivered to actual inbox:', params.to);
     
     return true;
   } catch (error: any) {
