@@ -37,12 +37,12 @@ function App() {
               muted 
               loop 
               playsInline
-              className="w-full h-full object-cover opacity-10"
-              style={{ filter: 'brightness(0.3)' }}
+              className="w-full h-full object-cover opacity-20"
+              style={{ filter: 'brightness(0.6) contrast(1.2)' }}
             >
               <source src="/attached_assets/20250708_1235_Surreal Floating Teeth_simple_compose_01jzmjtaxje1xrch7sj4tcvrjh_1751968458677.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-dark-charcoal bg-opacity-90" />
+            <div className="absolute inset-0 bg-gradient-to-b from-dark-charcoal/80 via-dark-charcoal/70 to-dark-charcoal/80" />
           </div>
           
           <div className="relative z-10 flex flex-col min-h-screen">

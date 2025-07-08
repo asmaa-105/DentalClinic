@@ -22,12 +22,12 @@ export default function Home() {
             muted 
             loop 
             playsInline
-            className="w-full h-full object-cover opacity-30"
-            style={{ filter: 'brightness(0.4)' }}
+            className="w-full h-full object-cover opacity-40"
+            style={{ filter: 'brightness(0.7) contrast(1.3) saturate(1.2)' }}
           >
             <source src="/attached_assets/20250708_1235_Surreal Floating Teeth_simple_compose_01jzmjtaxje1xrch7sj4tcvrjh_1751968458677.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-dark-charcoal bg-opacity-70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-dark-charcoal/60 via-transparent to-dark-charcoal/80" />
         </div>
         <div className="relative container mx-auto px-4 py-20 md:py-32">
           <div className="max-w-3xl">
@@ -114,7 +114,7 @@ export default function Home() {
                 </div>
               </div>
             ) : doctor ? (
-              <Card className="bg-dark-grey border-gray-600 shadow-xl">
+              <Card className="bg-dark-grey/80 backdrop-blur-sm border-gray-600 shadow-xl">
                 <CardContent className="p-8 md:p-12">
                   <div className="grid md:grid-cols-2 gap-8 items-center">
                     <div>
@@ -157,7 +157,7 @@ export default function Home() {
             </h3>
             
             <div className="grid md:grid-cols-3 gap-8">
-              <Card className="bg-dark-charcoal border-gray-600 shadow-lg">
+              <Card className="bg-dark-charcoal/70 backdrop-blur-sm border-gray-600 shadow-lg">
                 <CardContent className="p-6">
                   <div className="mb-4">
                     <Stethoscope className="text-gold" size={48} />
@@ -169,7 +169,7 @@ export default function Home() {
                 </CardContent>
               </Card>
               
-              <Card className="bg-dark-charcoal border-gray-600 shadow-lg">
+              <Card className="bg-dark-charcoal/70 backdrop-blur-sm border-gray-600 shadow-lg">
                 <CardContent className="p-6">
                   <div className="mb-4">
                     <Smile className="text-gold" size={48} />
@@ -181,7 +181,7 @@ export default function Home() {
                 </CardContent>
               </Card>
               
-              <Card className="bg-dark-charcoal border-gray-600 shadow-lg">
+              <Card className="bg-dark-charcoal/70 backdrop-blur-sm border-gray-600 shadow-lg">
                 <CardContent className="p-6">
                   <div className="mb-4">
                     <Wrench className="text-gold" size={48} />
