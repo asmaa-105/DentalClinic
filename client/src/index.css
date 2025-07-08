@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(0, 0%, 20%);
+  --muted: hsl(0, 0%, 96%);
+  --muted-foreground: hsl(0, 0%, 45%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(0, 0%, 20%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(0, 0%, 20%);
+  --border: hsl(0, 0%, 90%);
+  --input: hsl(0, 0%, 90%);
+  --primary: hsl(46, 48%, 49%);
+  --primary-foreground: hsl(0, 0%, 20%);
+  --secondary: hsl(0, 0%, 96%);
+  --secondary-foreground: hsl(0, 0%, 20%);
+  --accent: hsl(0, 0%, 96%);
+  --accent-foreground: hsl(0, 0%, 20%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(46, 48%, 49%);
+  --radius: 0.5rem;
+  
+  /* Custom dental theme colors */
+  --dark-charcoal: hsl(0, 0%, 20%);
+  --gold: hsl(46, 48%, 49%);
+  --warm-gold: hsl(46, 65%, 60%);
+  --dark-grey: hsl(0, 0%, 16%);
+  --light-grey: hsl(0, 0%, 97%);
+}
+
+.dark {
+  --background: hsl(0, 0%, 20%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(0, 0%, 16%);
+  --muted-foreground: hsl(0, 0%, 64%);
+  --popover: hsl(0, 0%, 20%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(0, 0%, 20%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(0, 0%, 16%);
+  --input: hsl(0, 0%, 16%);
+  --primary: hsl(46, 48%, 49%);
+  --primary-foreground: hsl(0, 0%, 20%);
+  --secondary: hsl(0, 0%, 16%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(0, 0%, 16%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62%, 30%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(46, 48%, 49%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased;
+    background-color: var(--dark-charcoal);
+    color: hsl(0, 0%, 98%);
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  .bg-dark-charcoal {
+    background-color: var(--dark-charcoal);
+  }
+  
+  .bg-dark-grey {
+    background-color: var(--dark-grey);
+  }
+  
+  .bg-gold {
+    background-color: var(--gold);
+  }
+  
+  .bg-warm-gold {
+    background-color: var(--warm-gold);
+  }
+  
+  .text-gold {
+    color: var(--gold);
+  }
+  
+  .text-warm-gold {
+    color: var(--warm-gold);
+  }
+  
+  .border-gold {
+    border-color: var(--gold);
+  }
+  
+  .hover\:bg-gold:hover {
+    background-color: var(--gold);
+  }
+  
+  .hover\:bg-warm-gold:hover {
+    background-color: var(--warm-gold);
+  }
+  
+  .hover\:text-gold:hover {
+    color: var(--gold);
+  }
+  
+  .hover\:text-warm-gold:hover {
+    color: var(--warm-gold);
+  }
+  
+  .focus\:border-gold:focus {
+    border-color: var(--gold);
+  }
+}

@@ -1,0 +1,171 @@
+import type { Appointment } from "@shared/schema";
+
+// Email service configuration
+const EMAIL_SERVICE_API_KEY = process.env.EMAIL_SERVICE_API_KEY || process.env.SENDGRID_API_KEY || "your-email-api-key";
+const EMAIL_SERVICE_ENDPOINT = process.env.EMAIL_SERVICE_ENDPOINT || "https://api.sendgrid.com/v3/mail/send";
+
+export interface EmailData {
+  to: string;
+  subject: string;
+  html: string;
+  text?: string;
+}
+
+export async function sendEmail(emailData: EmailData): Promise<void> {
+  try {
+    const response = await fetch(EMAIL_SERVICE_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${EMAIL_SERVICE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        personalizations: [
+          {
+            to: [{ email: emailData.to }],
+            subject: emailData.subject,
+          },
+        ],
+        from: { email: "noreply@elitedentalcare.com", name: "Elite Dental Care" },
+        content: [
+          {
+            type: "text/html",
+            value: emailData.html,
+          },
+        ],
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Email service error: ${response.statusText}`);
+    }
+  } catch (error) {
+    console.error("Failed to send email:", error);
+    throw error;
+  }
+}
+
+export async function sendAppointmentConfirmation(appointment: Appointment): Promise<void> {
+  const emailData: EmailData = {
+    to: appointment.patientEmail,
+    subject: "Appointment Confirmation - Elite Dental Care",
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="background-color: #333333; padding: 20px; text-align: center;">
+          <h1 style="color: #B89B4E; margin: 0;">Elite Dental Care</h1>
+        </div>
+        
+        <div style="padding: 20px; background-color: #f9f9f9;">
+          <h2 style="color: #333333;">Appointment Confirmed!</h2>
+          
+          <p>Dear ${appointment.patientName},</p>
+          
+          <p>Your appointment has been successfully scheduled. Here are the details:</p>
+          
+          <div style="background-color: white; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <h3 style="color: #333333; margin-top: 0;">Appointment Details</h3>
+            <p><strong>Date:</strong> ${new Date(appointment.appointmentDate).toLocaleDateString()}</p>
+            <p><strong>Time:</strong> ${appointment.appointmentTime}</p>
+            <p><strong>Doctor:</strong> Dr. Sarah Johnson</p>
+            <p><strong>Type:</strong> ${appointment.reasonForVisit}</p>
+            <p><strong>Location:</strong> Elite Dental Care</p>
+          </div>
+          
+          <div style="background-color: #B89B4E; color: white; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <h3 style="margin-top: 0;">Important Reminders</h3>
+            <ul>
+              <li>Please arrive 15 minutes early for check-in</li>
+              <li>Bring your insurance card and valid ID</li>
+              <li>You will receive a reminder 24 hours before your appointment</li>
+            </ul>
+          </div>
+          
+          <p>If you need to reschedule or cancel, please call us at (555) 123-4567.</p>
+          
+          <p>Thank you for choosing Elite Dental Care!</p>
+        </div>
+        
+        <div style="background-color: #333333; padding: 20px; text-align: center; color: white;">
+          <p>Elite Dental Care | 123 Dental Street, Medical Plaza, Suite 456, Healthville, HV 12345</p>
+          <p>Phone: (555) 123-4567 | Email: info@elitedentalcare.com</p>
+        </div>
+      </div>
+    `,
+  };
+
+  await sendEmail(emailData);
+}
+
+export async function sendAppointmentReminder(appointment: Appointment): Promise<void> {
+  const emailData: EmailData = {
+    to: appointment.patientEmail,
+    subject: "Appointment Reminder - Elite Dental Care",
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="background-color: #333333; padding: 20px; text-align: center;">
+          <h1 style="color: #B89B4E; margin: 0;">Elite Dental Care</h1>
+        </div>
+        
+        <div style="padding: 20px; background-color: #f9f9f9;">
+          <h2 style="color: #333333;">Appointment Reminder</h2>
+          
+          <p>Dear ${appointment.patientName},</p>
+          
+          <p>This is a friendly reminder about your upcoming appointment tomorrow:</p>
+          
+          <div style="background-color: white; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <h3 style="color: #333333; margin-top: 0;">Tomorrow's Appointment</h3>
+            <p><strong>Date:</strong> ${new Date(appointment.appointmentDate).toLocaleDateString()}</p>
+            <p><strong>Time:</strong> ${appointment.appointmentTime}</p>
+            <p><strong>Doctor:</strong> Dr. Sarah Johnson</p>
+            <p><strong>Type:</strong> ${appointment.reasonForVisit}</p>
+          </div>
+          
+          <p>Please arrive 15 minutes early and bring your insurance card and valid ID.</p>
+          
+          <p>If you need to reschedule or cancel, please call us at (555) 123-4567.</p>
+          
+          <p>We look forward to seeing you tomorrow!</p>
+        </div>
+        
+        <div style="background-color: #333333; padding: 20px; text-align: center; color: white;">
+          <p>Elite Dental Care | 123 Dental Street, Medical Plaza, Suite 456, Healthville, HV 12345</p>
+        </div>
+      </div>
+    `,
+  };
+
+  await sendEmail(emailData);
+}
+
+export async function sendAppointmentCancellation(appointment: Appointment): Promise<void> {
+  const emailData: EmailData = {
+    to: appointment.patientEmail,
+    subject: "Appointment Cancelled - Elite Dental Care",
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="background-color: #333333; padding: 20px; text-align: center;">
+          <h1 style="color: #B89B4E; margin: 0;">Elite Dental Care</h1>
+        </div>
+        
+        <div style="padding: 20px; background-color: #f9f9f9;">
+          <h2 style="color: #333333;">Appointment Cancelled</h2>
+          
+          <p>Dear ${appointment.patientName},</p>
+          
+          <p>Your appointment scheduled for ${new Date(appointment.appointmentDate).toLocaleDateString()} at ${appointment.appointmentTime} has been cancelled.</p>
+          
+          <p>If you would like to reschedule, please call us at (555) 123-4567 or visit our website to book a new appointment.</p>
+          
+          <p>Thank you for choosing Elite Dental Care!</p>
+        </div>
+        
+        <div style="background-color: #333333; padding: 20px; text-align: center; color: white;">
+          <p>Elite Dental Care | 123 Dental Street, Medical Plaza, Suite 456, Healthville, HV 12345</p>
+        </div>
+      </div>
+    `,
+  };
+
+  await sendEmail(emailData);
+}
