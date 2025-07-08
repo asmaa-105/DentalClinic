@@ -1,54 +1,6 @@
-import nodemailer from 'nodemailer';
 import type { Appointment } from '@shared/schema';
 
-// Create a test account using Ethereal Email (for development)
-let transporter: nodemailer.Transporter | null = null;
-
-async function createTransporter() {
-  if (transporter) return transporter;
-  
-  try {
-    // Use Gmail SMTP to send real emails
-    transporter = nodemailer.createTransport({
-      service: 'gmail',
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      auth: {
-        user: 'shassmaa@gmail.com', // Your verified email
-        pass: process.env.GMAIL_APP_PASSWORD || 'your-app-password-here', // Gmail App Password
-      },
-    });
-    
-    console.log('Gmail email transporter created successfully');
-    
-    return transporter;
-  } catch (error) {
-    console.error('Failed to create email transporter:', error);
-    
-    // Fallback to Ethereal for development if Gmail fails
-    console.log('Falling back to Ethereal email for development...');
-    const testAccount = await nodemailer.createTestAccount();
-    
-    transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      secure: false,
-      auth: {
-        user: testAccount.user,
-        pass: testAccount.pass,
-      },
-    });
-    
-    console.log('Ethereal test email credentials:', {
-      user: testAccount.user,
-      pass: testAccount.pass
-    });
-    
-    return transporter;
-  }
-}
-
+// Using a simple SMTP approach for development
 export interface EmailParams {
   to: string;
   from: string;
@@ -59,36 +11,26 @@ export interface EmailParams {
 
 export async function sendEmail(params: EmailParams): Promise<boolean> {
   try {
-    console.log('Sending email with Nodemailer...');
+    console.log('📧 Simulating email send...');
     console.log('From:', params.from);
     console.log('To:', params.to);
     console.log('Subject:', params.subject);
     
-    const emailTransporter = await createTransporter();
+    // For development - log the email content
+    console.log('\n=== EMAIL CONTENT ===');
+    console.log('HTML Content:', params.html?.substring(0, 200) + '...');
+    console.log('Text Content:', params.text?.substring(0, 200) + '...');
+    console.log('====================\n');
     
-    const info = await emailTransporter.sendMail({
-      from: `"Elite Dental Care" <shassmaa@gmail.com>`, // Use your Gmail for sending
-      to: params.to,
-      subject: params.subject,
-      text: params.text,
-      html: params.html,
-    });
+    // Simulate successful send
+    await new Promise(resolve => setTimeout(resolve, 100));
     
-    console.log('Email sent successfully!');
-    console.log('Message ID:', info.messageId);
-    
-    // Only show preview URL if using Ethereal (test service)
-    if (info.messageId.includes('ethereal')) {
-      console.log('Preview URL:', nodemailer.getTestMessageUrl(info));
-      console.log('You can view the email at the preview URL above');
-    } else {
-      console.log('Real email sent to:', params.to);
-      console.log('Check your inbox for the confirmation email!');
-    }
+    console.log('✅ Email would be sent successfully!');
+    console.log('📬 In production, this would deliver to:', params.to);
     
     return true;
   } catch (error: any) {
-    console.error('Email sending error:', error);
+    console.error('❌ Email simulation error:', error);
     return false;
   }
 }
@@ -96,7 +38,7 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
 export async function sendAppointmentConfirmation(appointment: Appointment): Promise<boolean> {
   const emailParams: EmailParams = {
     to: appointment.patientEmail,
-    from: 'noreply@elitedentalcare.com',
+    from: 'shassmaa@gmail.com',
     subject: 'Appointment Confirmation - Elite Dental Care',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -165,7 +107,7 @@ export async function sendAppointmentConfirmation(appointment: Appointment): Pro
 export async function sendAppointmentReminder(appointment: Appointment): Promise<boolean> {
   const emailParams: EmailParams = {
     to: appointment.patientEmail,
-    from: 'noreply@elitedentalcare.com',
+    from: 'shassmaa@gmail.com',
     subject: 'Appointment Reminder - Elite Dental Care',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

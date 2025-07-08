@@ -31,13 +31,36 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
       html: params.html,
     });
     
-    console.log('Email sent successfully:', response[0]?.statusCode);
+    console.log('Email sent successfully!');
+    console.log('Status code:', response[0]?.statusCode);
+    console.log('Headers:', response[0]?.headers);
+    console.log('✓ Confirmation email delivered to:', params.to);
     return true;
   } catch (error: any) {
     console.error('SendGrid email error:', error);
+    
     if (error.response) {
       console.error('Error response:', error.response.body);
+      
+      // Check for specific error types
+      if (error.response.body?.errors) {
+        const errors = error.response.body.errors;
+        for (const err of errors) {
+          if (err.message?.includes('Maximum credits exceeded')) {
+            console.error('❌ SendGrid Free Tier Limit Exceeded!');
+            console.error('Your SendGrid account has reached its daily/monthly email limit.');
+            console.error('Solutions:');
+            console.error('1. Wait for the limit to reset (daily limit resets at midnight UTC)');
+            console.error('2. Upgrade your SendGrid plan for more credits');
+            console.error('3. Check SendGrid dashboard for current usage');
+          } else if (err.message?.includes('Unauthorized')) {
+            console.error('❌ SendGrid API Key Invalid!');
+            console.error('Please check your SENDGRID_API_KEY environment variable');
+          }
+        }
+      }
     }
+    
     return false;
   }
 }

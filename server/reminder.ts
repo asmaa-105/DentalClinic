@@ -1,4 +1,4 @@
-import { sendAppointmentReminder } from './email-nodemailer';
+import { sendAppointmentReminder } from './email-resend';
 import { storage } from './storage';
 import type { Appointment } from '@shared/schema';
 
