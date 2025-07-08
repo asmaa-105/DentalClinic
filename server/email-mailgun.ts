@@ -1,7 +1,16 @@
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 import type { Appointment } from '@shared/schema';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Mailgun offers 5,000 emails/month free for 3 months, then pay-as-you-go
+const transporter = nodemailer.createTransport({
+  host: 'smtp.mailgun.org',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.MAILGUN_SMTP_USERNAME || '',
+    pass: process.env.MAILGUN_SMTP_PASSWORD || '',
+  },
+});
 
 export interface EmailParams {
   to: string;
@@ -13,13 +22,13 @@ export interface EmailParams {
 
 export async function sendEmail(params: EmailParams): Promise<boolean> {
   try {
-    console.log('📧 Sending email with Resend...');
+    console.log('📧 Sending email with Mailgun...');
     console.log('From:', params.from);
     console.log('To:', params.to);
     console.log('Subject:', params.subject);
     
-    if (!process.env.RESEND_API_KEY) {
-      console.error('❌ RESEND_API_KEY not found. Please set up your Resend API key.');
+    if (!process.env.MAILGUN_SMTP_USERNAME || !process.env.MAILGUN_SMTP_PASSWORD) {
+      console.error('❌ Mailgun credentials not found. Please set MAILGUN_SMTP_USERNAME and MAILGUN_SMTP_PASSWORD.');
       console.log('📋 For now, simulating email send...');
       
       // Fallback to simulation
@@ -32,38 +41,29 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
       return true;
     }
     
-    const { data, error } = await resend.emails.send({
-      from: params.from,
-      to: [params.to],
+    const info = await transporter.sendMail({
+      from: `"Elite Dental Care" <${process.env.MAILGUN_SMTP_USERNAME}>`,
+      to: params.to,
       subject: params.subject,
-      html: params.html,
       text: params.text,
+      html: params.html,
     });
 
-    if (error) {
-      console.error('❌ Resend error:', error);
-      return false;
-    }
-
-    console.log('✅ Email sent successfully with Resend!');
-    console.log('📧 Email ID:', data?.id);
+    console.log('✅ Email sent successfully with Mailgun!');
+    console.log('📧 Message ID:', info.messageId);
     console.log('📬 Delivered to:', params.to);
     
     return true;
   } catch (error: any) {
-    console.error('❌ Email sending error:', error);
+    console.error('❌ Mailgun email error:', error);
     return false;
   }
 }
 
 export async function sendAppointmentConfirmation(appointment: Appointment): Promise<boolean> {
-  // TODO: Replace with your verified domain after setup
-  // Example: 'Elite Dental Care <noreply@yourdomain.com>'
-  const fromAddress = process.env.VERIFIED_EMAIL_FROM || 'Elite Dental Care <onboarding@resend.dev>';
-  
   const emailParams: EmailParams = {
     to: appointment.patientEmail,
-    from: fromAddress,
+    from: process.env.MAILGUN_SMTP_USERNAME || 'noreply@elitedentalcare.com',
     subject: 'Appointment Confirmation - Elite Dental Care',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -130,13 +130,9 @@ export async function sendAppointmentConfirmation(appointment: Appointment): Pro
 }
 
 export async function sendAppointmentReminder(appointment: Appointment): Promise<boolean> {
-  // TODO: Replace with your verified domain after setup
-  // Example: 'Elite Dental Care <noreply@yourdomain.com>'
-  const fromAddress = process.env.VERIFIED_EMAIL_FROM || 'Elite Dental Care <onboarding@resend.dev>';
-  
   const emailParams: EmailParams = {
     to: appointment.patientEmail,
-    from: fromAddress,
+    from: process.env.MAILGUN_SMTP_USERNAME || 'noreply@elitedentalcare.com',
     subject: 'Appointment Reminder - Elite Dental Care',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

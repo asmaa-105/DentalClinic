@@ -1,4 +1,4 @@
-import { sendAppointmentReminder } from './email-brevo';
+import { sendAppointmentReminder } from './email-free';
 import { storage } from './storage';
 import type { Appointment } from '@shared/schema';
 

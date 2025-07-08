@@ -1,9 +1,11 @@
-import { Resend } from 'resend';
+import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 import type { Appointment } from '@shared/schema';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const mailerSend = new MailerSend({
+  apiKey: process.env.MAILERSEND_API_TOKEN || '',
+});
 
-export interface EmailParams {
+export interface EmailData {
   to: string;
   from: string;
   subject: string;
@@ -11,15 +13,15 @@ export interface EmailParams {
   html?: string;
 }
 
-export async function sendEmail(params: EmailParams): Promise<boolean> {
+export async function sendEmail(params: EmailData): Promise<boolean> {
   try {
-    console.log('📧 Sending email with Resend...');
+    console.log('📧 Sending email with MailerSend...');
     console.log('From:', params.from);
     console.log('To:', params.to);
     console.log('Subject:', params.subject);
     
-    if (!process.env.RESEND_API_KEY) {
-      console.error('❌ RESEND_API_KEY not found. Please set up your Resend API key.');
+    if (!process.env.MAILERSEND_API_TOKEN) {
+      console.error('❌ MailerSend API token not found. Please set MAILERSEND_API_TOKEN.');
       console.log('📋 For now, simulating email send...');
       
       // Fallback to simulation
@@ -32,38 +34,33 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
       return true;
     }
     
-    const { data, error } = await resend.emails.send({
-      from: params.from,
-      to: [params.to],
-      subject: params.subject,
-      html: params.html,
-      text: params.text,
-    });
-
-    if (error) {
-      console.error('❌ Resend error:', error);
-      return false;
-    }
-
-    console.log('✅ Email sent successfully with Resend!');
-    console.log('📧 Email ID:', data?.id);
+    const sentFrom = new Sender("noreply@trial-z3m5jgr6pqklx2dp.mlsender.net", "Elite Dental Care");
+    const recipients = [new Recipient(params.to, "Patient")];
+    
+    const emailParams = new EmailParams()
+      .setFrom(sentFrom)
+      .setTo(recipients)
+      .setSubject(params.subject)
+      .setHtml(params.html || '')
+      .setText(params.text || '');
+    
+    const result = await mailerSend.email.send(emailParams);
+    
+    console.log('✅ Email sent successfully with MailerSend!');
+    console.log('📧 Email response:', result);
     console.log('📬 Delivered to:', params.to);
     
     return true;
   } catch (error: any) {
-    console.error('❌ Email sending error:', error);
+    console.error('❌ MailerSend email error:', error);
     return false;
   }
 }
 
 export async function sendAppointmentConfirmation(appointment: Appointment): Promise<boolean> {
-  // TODO: Replace with your verified domain after setup
-  // Example: 'Elite Dental Care <noreply@yourdomain.com>'
-  const fromAddress = process.env.VERIFIED_EMAIL_FROM || 'Elite Dental Care <onboarding@resend.dev>';
-  
-  const emailParams: EmailParams = {
+  const emailData: EmailData = {
     to: appointment.patientEmail,
-    from: fromAddress,
+    from: 'Elite Dental Care <noreply@trial-z3m5jgr6pqklx2dp.mlsender.net>',
     subject: 'Appointment Confirmation - Elite Dental Care',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -126,17 +123,13 @@ export async function sendAppointmentConfirmation(appointment: Appointment): Pro
     `
   };
 
-  return sendEmail(emailParams);
+  return sendEmail(emailData);
 }
 
 export async function sendAppointmentReminder(appointment: Appointment): Promise<boolean> {
-  // TODO: Replace with your verified domain after setup
-  // Example: 'Elite Dental Care <noreply@yourdomain.com>'
-  const fromAddress = process.env.VERIFIED_EMAIL_FROM || 'Elite Dental Care <onboarding@resend.dev>';
-  
-  const emailParams: EmailParams = {
+  const emailData: EmailData = {
     to: appointment.patientEmail,
-    from: fromAddress,
+    from: 'Elite Dental Care <noreply@trial-z3m5jgr6pqklx2dp.mlsender.net>',
     subject: 'Appointment Reminder - Elite Dental Care',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -190,5 +183,5 @@ export async function sendAppointmentReminder(appointment: Appointment): Promise
     `
   };
 
-  return sendEmail(emailParams);
+  return sendEmail(emailData);
 }

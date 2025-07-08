@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertAppointmentSchema } from "@shared/schema";
 import { z } from "zod";
-import { sendAppointmentConfirmation } from "./email-brevo";
+import { sendAppointmentConfirmation } from "./email-free";
 import { reminderScheduler } from "./reminder";
 
 export async function registerRoutes(app: Express): Promise<Server> {

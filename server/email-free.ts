@@ -1,7 +1,54 @@
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 import type { Appointment } from '@shared/schema';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Free Gmail SMTP solution - no API keys needed, just Gmail credentials
+let transporter: nodemailer.Transporter | null = null;
+
+async function createTransporter() {
+  if (transporter) return transporter;
+  
+  // Try Gmail SMTP first (most reliable free option)
+  if (process.env.GMAIL_EMAIL && process.env.GMAIL_APP_PASSWORD) {
+    try {
+      transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.GMAIL_EMAIL,
+          pass: process.env.GMAIL_APP_PASSWORD,
+        },
+      });
+      
+      // Test the connection
+      await transporter.verify();
+      console.log('✅ Gmail SMTP connection verified');
+      return transporter;
+    } catch (error) {
+      console.error('Gmail SMTP failed, falling back to test account');
+    }
+  }
+  
+  // Fallback to Ethereal (always free, no signup needed)
+  try {
+    const testAccount = await nodemailer.createTestAccount();
+    
+    transporter = nodemailer.createTransport({
+      host: 'smtp.ethereal.email',
+      port: 587,
+      secure: false,
+      auth: {
+        user: testAccount.user,
+        pass: testAccount.pass,
+      },
+    });
+    
+    console.log('📧 Using free Ethereal email for testing');
+    console.log('Test account:', testAccount.user);
+    return transporter;
+  } catch (error) {
+    console.error('Failed to create any email transporter:', error);
+    throw error;
+  }
+}
 
 export interface EmailParams {
   to: string;
@@ -13,41 +60,36 @@ export interface EmailParams {
 
 export async function sendEmail(params: EmailParams): Promise<boolean> {
   try {
-    console.log('📧 Sending email with Resend...');
-    console.log('From:', params.from);
+    console.log('📧 Sending email...');
     console.log('To:', params.to);
     console.log('Subject:', params.subject);
     
-    if (!process.env.RESEND_API_KEY) {
-      console.error('❌ RESEND_API_KEY not found. Please set up your Resend API key.');
-      console.log('📋 For now, simulating email send...');
-      
-      // Fallback to simulation
-      console.log('\n=== EMAIL CONTENT ===');
-      console.log('HTML Content:', params.html?.substring(0, 200) + '...');
-      console.log('Text Content:', params.text?.substring(0, 200) + '...');
-      console.log('====================\n');
-      
-      console.log('✅ Email simulation complete!');
-      return true;
-    }
+    const emailTransporter = await createTransporter();
     
-    const { data, error } = await resend.emails.send({
-      from: params.from,
-      to: [params.to],
+    // Use Gmail if available, otherwise use Ethereal test account
+    const fromAddress = process.env.GMAIL_EMAIL 
+      ? `"Elite Dental Care" <${process.env.GMAIL_EMAIL}>`
+      : `"Elite Dental Care" <${params.from}>`;
+    
+    const info = await emailTransporter.sendMail({
+      from: fromAddress,
+      to: params.to,
       subject: params.subject,
-      html: params.html,
       text: params.text,
+      html: params.html,
     });
-
-    if (error) {
-      console.error('❌ Resend error:', error);
-      return false;
+    
+    console.log('✅ Email sent successfully!');
+    console.log('Message ID:', info.messageId);
+    
+    // Show preview URL for Ethereal emails
+    if (info.messageId.includes('ethereal')) {
+      const previewUrl = nodemailer.getTestMessageUrl(info);
+      console.log('📧 Preview your email at:', previewUrl);
+      console.log('(This is a test email - in production it would go to the recipient)');
+    } else {
+      console.log('📬 Real email delivered to:', params.to);
     }
-
-    console.log('✅ Email sent successfully with Resend!');
-    console.log('📧 Email ID:', data?.id);
-    console.log('📬 Delivered to:', params.to);
     
     return true;
   } catch (error: any) {
@@ -57,13 +99,9 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
 }
 
 export async function sendAppointmentConfirmation(appointment: Appointment): Promise<boolean> {
-  // TODO: Replace with your verified domain after setup
-  // Example: 'Elite Dental Care <noreply@yourdomain.com>'
-  const fromAddress = process.env.VERIFIED_EMAIL_FROM || 'Elite Dental Care <onboarding@resend.dev>';
-  
   const emailParams: EmailParams = {
     to: appointment.patientEmail,
-    from: fromAddress,
+    from: 'noreply@elitedentalcare.com',
     subject: 'Appointment Confirmation - Elite Dental Care',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -130,13 +168,9 @@ export async function sendAppointmentConfirmation(appointment: Appointment): Pro
 }
 
 export async function sendAppointmentReminder(appointment: Appointment): Promise<boolean> {
-  // TODO: Replace with your verified domain after setup
-  // Example: 'Elite Dental Care <noreply@yourdomain.com>'
-  const fromAddress = process.env.VERIFIED_EMAIL_FROM || 'Elite Dental Care <onboarding@resend.dev>';
-  
   const emailParams: EmailParams = {
     to: appointment.patientEmail,
-    from: fromAddress,
+    from: 'noreply@elitedentalcare.com',
     subject: 'Appointment Reminder - Elite Dental Care',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
