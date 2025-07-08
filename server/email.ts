@@ -18,16 +18,26 @@ export interface EmailParams {
 
 export async function sendEmail(params: EmailParams): Promise<boolean> {
   try {
-    await mailService.send({
+    console.log('Sending email with SendGrid...');
+    console.log('From:', params.from);
+    console.log('To:', params.to);
+    console.log('Subject:', params.subject);
+    
+    const response = await mailService.send({
       to: params.to,
       from: params.from,
       subject: params.subject,
       text: params.text,
       html: params.html,
     });
+    
+    console.log('Email sent successfully:', response[0]?.statusCode);
     return true;
-  } catch (error) {
+  } catch (error: any) {
     console.error('SendGrid email error:', error);
+    if (error.response) {
+      console.error('Error response:', error.response.body);
+    }
     return false;
   }
 }
@@ -35,7 +45,7 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
 export async function sendAppointmentConfirmation(appointment: Appointment): Promise<boolean> {
   const emailParams: EmailParams = {
     to: appointment.patientEmail,
-    from: 'noreply@elitedentalcare.com',
+    from: 'asmaachehab10@gmail.com', // Using your verified email temporarily
     subject: 'Appointment Confirmation - Elite Dental Care',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -104,7 +114,7 @@ export async function sendAppointmentConfirmation(appointment: Appointment): Pro
 export async function sendAppointmentReminder(appointment: Appointment): Promise<boolean> {
   const emailParams: EmailParams = {
     to: appointment.patientEmail,
-    from: 'noreply@elitedentalcare.com',
+    from: 'asmaachehab10@gmail.com', // Using your verified email temporarily
     subject: 'Appointment Reminder - Elite Dental Care',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
