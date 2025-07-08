@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useLocation, useRoute } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, Calendar, Clock, User, MapPin } from "lucide-react";
+import { Check, Calendar, Clock, User, MapPin, Download } from "lucide-react";
 import type { Appointment } from "@shared/schema";
 
 export default function Confirmation() {
@@ -14,6 +14,50 @@ export default function Confirmation() {
     queryKey: [`/api/appointments/${appointmentId}`],
     enabled: !!appointmentId,
   });
+
+  const generateCalendarEvent = () => {
+    if (!appointment) return '';
+    
+    const date = new Date(appointment.appointmentDate);
+    const [time, period] = appointment.appointmentTime.split(' ');
+    const [hours, minutes] = time.split(':');
+    let hour = parseInt(hours);
+    
+    if (period === 'PM' && hour !== 12) hour += 12;
+    if (period === 'AM' && hour === 12) hour = 0;
+    
+    date.setHours(hour, parseInt(minutes), 0, 0);
+    const startTime = date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    
+    const endDate = new Date(date.getTime() + 60 * 60 * 1000); // 1 hour later
+    const endTime = endDate.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    
+    const title = `Dental Appointment - ${appointment.reasonForVisit}`;
+    const description = `Appointment with Dr. Sarah Johnson at Elite Dental Care\\n\\nPatient: ${appointment.patientName}\\nType: ${appointment.reasonForVisit}\\nPhone: ${appointment.patientPhone}\\nEmail: ${appointment.patientEmail}`;
+    const location = 'Elite Dental Care, 123 Dental Street, Medical Plaza, Suite 456, Healthville, HV 12345';
+    
+    return `data:text/calendar;charset=utf8,BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Elite Dental Care//Appointment//EN
+BEGIN:VEVENT
+UID:${appointment.id}@elitedentalcare.com
+DTSTART:${startTime}
+DTEND:${endTime}
+SUMMARY:${title}
+DESCRIPTION:${description}
+LOCATION:${location}
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR`;
+  };
+
+  const handleAddToCalendar = () => {
+    const calendarData = generateCalendarEvent();
+    const link = document.createElement('a');
+    link.href = calendarData;
+    link.download = `appointment-${appointment?.id}.ics`;
+    link.click();
+  };
 
   if (isLoading) {
     return (
@@ -148,12 +192,10 @@ export default function Confirmation() {
 
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button
-                    onClick={() => {
-                      // Add to calendar functionality would go here
-                      alert("Add to calendar functionality would be implemented here");
-                    }}
+                    onClick={handleAddToCalendar}
                     className="flex-1 bg-gold hover:bg-warm-gold text-dark-charcoal font-semibold"
                   >
+                    <Download className="mr-2" size={20} />
                     Add to Calendar
                   </Button>
                   <Button

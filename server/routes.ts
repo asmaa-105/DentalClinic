@@ -3,8 +3,12 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertAppointmentSchema } from "@shared/schema";
 import { z } from "zod";
+import { sendAppointmentConfirmation } from "./email";
+import { reminderScheduler } from "./reminder";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Initialize reminder scheduler for existing appointments
+  reminderScheduler.scheduleAllReminders();
   // Get all doctors
   app.get("/api/doctors", async (req, res) => {
     try {
@@ -73,8 +77,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const validatedData = insertAppointmentSchema.parse(req.body);
       const appointment = await storage.createAppointment(validatedData);
       
-      // TODO: Send email notification here
-      // await sendAppointmentConfirmation(appointment);
+      // Send email confirmation and schedule reminder
+      try {
+        await sendAppointmentConfirmation(appointment);
+        reminderScheduler.scheduleReminder(appointment);
+        console.log(`Confirmation email sent to ${appointment.patientEmail}`);
+      } catch (emailError) {
+        console.error('Failed to send confirmation email:', emailError);
+        // Don't fail the appointment creation if email fails
+      }
       
       res.status(201).json(appointment);
     } catch (error) {

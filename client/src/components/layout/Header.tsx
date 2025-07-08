@@ -12,6 +12,7 @@ export function Header() {
     { name: "Home", href: "/" },
     { name: "Our Doctor", href: "/doctor" },
     { name: "Book Appointment", href: "/booking" },
+    { name: "Calendar", href: "/calendar" },
     { name: "Contact", href: "/contact" },
   ];
 

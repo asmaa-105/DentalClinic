@@ -8,6 +8,7 @@ import { Footer } from "@/components/layout/Footer";
 import Home from "@/pages/Home";
 import Doctor from "@/pages/Doctor";
 import Booking from "@/pages/Booking";
+import Calendar from "@/pages/Calendar";
 import Confirmation from "@/pages/Confirmation";
 import Contact from "@/pages/Contact";
 import NotFound from "@/pages/not-found";
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/doctor" component={Doctor} />
       <Route path="/booking" component={Booking} />
+      <Route path="/calendar" component={Calendar} />
       <Route path="/confirmation/:id" component={Confirmation} />
       <Route path="/contact" component={Contact} />
       <Route component={NotFound} />
