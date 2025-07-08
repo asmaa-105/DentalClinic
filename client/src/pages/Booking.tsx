@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { insertAppointmentSchema } from "@shared/schema";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { z } from "zod";
 
@@ -40,7 +40,7 @@ export default function Booking() {
   });
 
   const { data: availability, isLoading: availabilityLoading } = useQuery({
-    queryKey: ["/api/availability", 1, selectedDate],
+    queryKey: [`/api/availability/1/${selectedDate}`],
     enabled: !!selectedDate,
   });
 
@@ -54,6 +54,8 @@ export default function Booking() {
         title: "Appointment Booked!",
         description: "Your appointment has been successfully scheduled.",
       });
+      // Invalidate availability queries to update available slots
+      queryClient.invalidateQueries({ queryKey: ['/api/availability'] });
       setLocation(`/confirmation/${appointment.id}`);
     },
     onError: () => {
@@ -205,9 +207,9 @@ export default function Booking() {
                       {selectedDate ? (
                         availabilityLoading ? (
                           <div className="text-gray-300">Loading available times...</div>
-                        ) : (
+                        ) : availability?.timeSlots && availability.timeSlots.length > 0 ? (
                           <div className="grid grid-cols-2 gap-3">
-                            {availability?.timeSlots?.map((time: string) => (
+                            {availability.timeSlots.map((time: string) => (
                               <Button
                                 key={time}
                                 variant={selectedTime === time ? "default" : "outline"}
@@ -222,6 +224,8 @@ export default function Booking() {
                               </Button>
                             ))}
                           </div>
+                        ) : (
+                          <div className="text-gray-300">No available time slots for this date</div>
                         )
                       ) : (
                         <div className="text-gray-300">Please select a date first</div>
