@@ -15,13 +15,20 @@ export default function Home() {
   return (
     <div className="bg-dark-charcoal text-white">
       {/* Hero Section */}
-      <section className="relative bg-dark-charcoal">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1631815587646-b85a1bb027e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&h=1080')`
-          }}
-        />
+      <section className="relative bg-dark-charcoal overflow-hidden">
+        <div className="absolute inset-0">
+          <video 
+            autoPlay 
+            muted 
+            loop 
+            playsInline
+            className="w-full h-full object-cover opacity-30"
+            style={{ filter: 'brightness(0.4)' }}
+          >
+            <source src="/attached_assets/20250708_1235_Surreal Floating Teeth_simple_compose_01jzmjtaxje1xrch7sj4tcvrjh_1751968458677.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-dark-charcoal bg-opacity-70" />
+        </div>
         <div className="relative container mx-auto px-4 py-20 md:py-32">
           <div className="max-w-3xl">
             <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white">
