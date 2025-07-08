@@ -45,7 +45,7 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
 export async function sendAppointmentConfirmation(appointment: Appointment): Promise<boolean> {
   const emailParams: EmailParams = {
     to: appointment.patientEmail,
-    from: 'asmaachehab10@gmail.com', // Using your verified email temporarily
+    from: 'shassmaa@gmail.com', // Using your verified email
     subject: 'Appointment Confirmation - Elite Dental Care',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -114,7 +114,7 @@ export async function sendAppointmentConfirmation(appointment: Appointment): Pro
 export async function sendAppointmentReminder(appointment: Appointment): Promise<boolean> {
   const emailParams: EmailParams = {
     to: appointment.patientEmail,
-    from: 'asmaachehab10@gmail.com', // Using your verified email temporarily
+    from: 'shassmaa@gmail.com', // Using your verified email
     subject: 'Appointment Reminder - Elite Dental Care',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
