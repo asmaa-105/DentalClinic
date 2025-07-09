@@ -71,7 +71,7 @@ export default function CalendarPage() {
           autoPlay
           muted
           loop
-          className="w-full h-full object-cover opacity-20 brightness-125 contrast-125"
+          className="w-full h-full object-cover opacity-15 brightness-75 contrast-75 blur-sm"
         >
           <source src="/attached_assets/20250708_1235_Surreal Floating Teeth_simple_compose_01jzmjtaxje1xrch7sj4tcvrjh_1751968458677.mp4" type="video/mp4" />
         </video>
@@ -350,11 +350,11 @@ export default function CalendarPage() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div className="text-center p-6 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg border border-blue-500/30">
-                <div className="text-3xl font-bold text-blue-300 mb-2">
+              <div className="text-center p-6 bg-gradient-to-br from-gray-600/20 to-gray-700/20 rounded-lg border border-gray-500/30">
+                <div className="text-3xl font-bold text-gray-300 mb-2">
                   {appointments?.length || 0}
                 </div>
-                <div className="text-sm text-blue-200">Total Appointments</div>
+                <div className="text-sm text-gray-200">Total Appointments</div>
               </div>
               
               <div className="text-center p-6 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-lg border border-green-500/30">
@@ -371,11 +371,11 @@ export default function CalendarPage() {
                 <div className="text-sm text-gold">Busy Days</div>
               </div>
               
-              <div className="text-center p-6 bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-lg border border-purple-500/30">
-                <div className="text-3xl font-bold text-purple-300 mb-2">
+              <div className="text-center p-6 bg-gradient-to-br from-gray-500/20 to-gray-600/20 rounded-lg border border-gray-400/30">
+                <div className="text-3xl font-bold text-gray-300 mb-2">
                   {selectedAppointments.length}
                 </div>
-                <div className="text-sm text-purple-200">Selected Day</div>
+                <div className="text-sm text-gray-200">Selected Day</div>
               </div>
             </div>
           </CardContent>
