@@ -28,9 +28,18 @@ export default function CalendarPage() {
     (apt: Appointment) => apt.appointmentDate === selectedDateString
   ) || [];
 
+  // Debug logging
+  console.log('Selected Date:', selectedDateString);
+  console.log('All Appointments:', appointments);
+  console.log('Selected Appointments:', selectedAppointments);
+
   const getAppointmentDates = () => {
     if (!appointments) return [];
-    return appointments.map((apt: Appointment) => new Date(apt.appointmentDate));
+    return appointments.map((apt: Appointment) => {
+      // Parse the date string correctly to avoid timezone issues
+      const [year, month, day] = apt.appointmentDate.split('-');
+      return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+    });
   };
 
   const getStatusColor = (status: string) => {
