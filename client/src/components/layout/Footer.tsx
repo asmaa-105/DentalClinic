@@ -7,7 +7,7 @@ const scrollToTop = () => {
 
 export function Footer() {
   return (
-    <footer className="bg-dark-grey border-t border-gray-700 py-12">
+    <footer className="bg-dark-grey border-t border-gray-700 py-12 relative z-30">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
@@ -39,7 +39,9 @@ export function Footer() {
             <ul className="space-y-2 text-gray-300">
               <li><Link href="/" className="hover:text-gold transition-colors duration-200" onClick={scrollToTop}>Home</Link></li>
               <li><Link href="/doctor" className="hover:text-gold transition-colors duration-200" onClick={scrollToTop}>Our Doctor</Link></li>
+              <li><Link href="/services" className="hover:text-gold transition-colors duration-200" onClick={scrollToTop}>Services</Link></li>
               <li><Link href="/booking" className="hover:text-gold transition-colors duration-200" onClick={scrollToTop}>Book Appointment</Link></li>
+              <li><Link href="/calendar" className="hover:text-gold transition-colors duration-200" onClick={scrollToTop}>Calendar</Link></li>
               <li><Link href="/contact" className="hover:text-gold transition-colors duration-200" onClick={scrollToTop}>Contact</Link></li>
             </ul>
           </div>

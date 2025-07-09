@@ -132,7 +132,7 @@ export default function Services() {
       <div className="fixed inset-0 bg-gradient-to-br from-dark-charcoal/80 via-dark-grey/90 to-dark-charcoal/80 z-10" />
 
       {/* Content */}
-      <div className="relative z-20">
+      <div className="relative z-20 pb-20">
         {/* Hero Section */}
         <section className="py-20 bg-gradient-to-r from-dark-charcoal/95 via-dark-grey/95 to-dark-charcoal/95">
           <div className="container mx-auto px-4">
