@@ -1,6 +1,10 @@
 import { Link } from "wouter";
 import { Heart, Facebook, Twitter, Instagram, Linkedin, Phone, Mail, MapPin } from "lucide-react";
 
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
 export function Footer() {
   return (
     <footer className="bg-dark-grey border-t border-gray-700 py-12">
@@ -33,20 +37,20 @@ export function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-4 text-white">Quick Links</h4>
             <ul className="space-y-2 text-gray-300">
-              <li><Link href="/" className="hover:text-gold transition-colors duration-200">Home</Link></li>
-              <li><Link href="/doctor" className="hover:text-gold transition-colors duration-200">Our Doctor</Link></li>
-              <li><Link href="/booking" className="hover:text-gold transition-colors duration-200">Book Appointment</Link></li>
-              <li><Link href="/contact" className="hover:text-gold transition-colors duration-200">Contact</Link></li>
+              <li><Link href="/" className="hover:text-gold transition-colors duration-200" onClick={scrollToTop}>Home</Link></li>
+              <li><Link href="/doctor" className="hover:text-gold transition-colors duration-200" onClick={scrollToTop}>Our Doctor</Link></li>
+              <li><Link href="/booking" className="hover:text-gold transition-colors duration-200" onClick={scrollToTop}>Book Appointment</Link></li>
+              <li><Link href="/contact" className="hover:text-gold transition-colors duration-200" onClick={scrollToTop}>Contact</Link></li>
             </ul>
           </div>
           
           <div>
             <h4 className="text-lg font-semibold mb-4 text-white">Services</h4>
             <ul className="space-y-2 text-gray-300">
-              <li><Link href="/services" className="hover:text-gold transition-colors duration-200">General Dentistry</Link></li>
-              <li><Link href="/services" className="hover:text-gold transition-colors duration-200">Cosmetic Dentistry</Link></li>
-              <li><Link href="/services" className="hover:text-gold transition-colors duration-200">Restorative Care</Link></li>
-              <li><Link href="/services" className="hover:text-gold transition-colors duration-200">Preventive Care</Link></li>
+              <li><Link href="/services" className="hover:text-gold transition-colors duration-200" onClick={scrollToTop}>General Dentistry</Link></li>
+              <li><Link href="/services" className="hover:text-gold transition-colors duration-200" onClick={scrollToTop}>Cosmetic Dentistry</Link></li>
+              <li><Link href="/services" className="hover:text-gold transition-colors duration-200" onClick={scrollToTop}>Restorative Care</Link></li>
+              <li><Link href="/services" className="hover:text-gold transition-colors duration-200" onClick={scrollToTop}>Preventive Care</Link></li>
             </ul>
           </div>
           
