@@ -7,6 +7,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import Home from "@/pages/Home";
 import Doctor from "@/pages/Doctor";
+import Services from "@/pages/Services";
 import Booking from "@/pages/Booking";
 import Calendar from "@/pages/Calendar";
 import Confirmation from "@/pages/Confirmation";
@@ -18,6 +19,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/doctor" component={Doctor} />
+      <Route path="/services" component={Services} />
       <Route path="/booking" component={Booking} />
       <Route path="/calendar" component={Calendar} />
       <Route path="/confirmation/:id" component={Confirmation} />
