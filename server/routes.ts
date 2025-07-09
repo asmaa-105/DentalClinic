@@ -245,16 +245,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { firstName, lastName, email, phone, subject, message } = req.body;
       
       // Send email notification to clinic
+      console.log('📧 Processing contact form submission...');
+      console.log('Contact data:', { firstName, lastName, email, phone, subject });
+      
       try {
-        await sendContactMessage({
+        const result = await sendContactMessage({
           name: `${firstName} ${lastName}`,
           email,
           phone,
           message: `Subject: ${subject}\n\n${message}`
         });
-        console.log(`Contact form message sent to clinic from ${firstName} ${lastName}`);
+        console.log(`✅ Contact form email result: ${result}`);
+        console.log(`📬 Contact form message sent to clinic from ${firstName} ${lastName}`);
       } catch (emailError) {
-        console.error('Failed to send contact form email:', emailError);
+        console.error('❌ Failed to send contact form email:', emailError);
         // Don't fail the response if email fails
       }
       
