@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertAppointmentSchema } from "@shared/schema";
 import { z } from "zod";
-import { sendAppointmentConfirmation } from "./email-free";
+import { sendAppointmentConfirmation, sendAppointmentReminder, sendAppointmentCancellation } from "./email-free";
 import { reminderScheduler } from "./reminder";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -150,6 +150,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ message: "Appointment cancelled successfully" });
     } catch (error) {
       res.status(500).json({ message: "Failed to cancel appointment" });
+    }
+  });
+
+  // Doctor authentication
+  app.post("/api/doctor/login", async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      
+      // Simple authentication - in production, use proper password hashing
+      if (username === "doctor" && password === "dental123") {
+        res.json({ success: true, message: "Login successful" });
+      } else {
+        res.status(401).json({ error: "Invalid credentials" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Login failed" });
+    }
+  });
+
+  // Update appointment with email notifications
+  app.patch("/api/appointments/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const originalAppointment = await storage.getAppointment(id);
+      
+      if (!originalAppointment) {
+        return res.status(404).json({ message: "Appointment not found" });
+      }
+      
+      const updatedAppointment = await storage.updateAppointment(id, req.body);
+      
+      // Send email notification based on status change
+      try {
+        if (req.body.status === "cancelled") {
+          await sendAppointmentCancellation(updatedAppointment);
+        } else if (req.body.appointmentDate !== originalAppointment.appointmentDate || 
+                   req.body.appointmentTime !== originalAppointment.appointmentTime) {
+          await sendAppointmentReminder(updatedAppointment);
+        }
+      } catch (emailError) {
+        console.error('Failed to send notification email:', emailError);
+      }
+      
+      res.json(updatedAppointment);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update appointment" });
     }
   });
 

@@ -13,6 +13,8 @@ import Booking from "@/pages/Booking";
 import Calendar from "@/pages/Calendar";
 import Confirmation from "@/pages/Confirmation";
 import Contact from "@/pages/Contact";
+import DoctorLogin from "@/pages/DoctorLogin";
+import DoctorDashboard from "@/pages/DoctorDashboard";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -23,17 +25,27 @@ function Router() {
     window.scrollTo(0, 0);
   }, [location]);
   
+  const isDoctorRoute = location.startsWith('/doctor/');
+  
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/doctor" component={Doctor} />
-      <Route path="/services" component={Services} />
-      <Route path="/booking" component={Booking} />
-      <Route path="/calendar" component={Calendar} />
-      <Route path="/confirmation/:id" component={Confirmation} />
-      <Route path="/contact" component={Contact} />
-      <Route component={NotFound} />
-    </Switch>
+    <div className="flex flex-col min-h-screen">
+      {!isDoctorRoute && <Header />}
+      <main className={`flex-1 ${isDoctorRoute ? '' : 'relative z-20'}`}>
+        <Switch>
+          <Route path="/" component={Home} />
+          <Route path="/doctor" component={Doctor} />
+          <Route path="/services" component={Services} />
+          <Route path="/booking" component={Booking} />
+          <Route path="/calendar" component={Calendar} />
+          <Route path="/confirmation/:id" component={Confirmation} />
+          <Route path="/contact" component={Contact} />
+          <Route path="/doctor/login" component={DoctorLogin} />
+          <Route path="/doctor/dashboard" component={DoctorDashboard} />
+          <Route component={NotFound} />
+        </Switch>
+      </main>
+      {!isDoctorRoute && <Footer />}
+    </div>
   );
 }
 
@@ -57,12 +69,8 @@ function App() {
             <div className="absolute inset-0 bg-gradient-to-b from-dark-charcoal/80 via-dark-charcoal/70 to-dark-charcoal/80" />
           </div>
           
-          <div className="relative z-10 flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-1 relative z-20">
-              <Router />
-            </main>
-            <Footer />
+          <div className="relative z-10">
+            <Router />
           </div>
         </div>
         <Toaster />

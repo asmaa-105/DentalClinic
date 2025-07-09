@@ -43,14 +43,23 @@ This is a modern, responsive dental clinic website built with React, TypeScript,
 - `GET /api/doctors/:id/availability` - Get doctor availability
 - `GET /api/availability/:doctorId/:date` - Get availability for specific date
 - `POST /api/appointments` - Create new appointment
+- `GET /api/appointments` - Get all appointments
+- `GET /api/appointments/:id` - Get specific appointment
+- `PATCH /api/appointments/:id` - Update appointment with email notifications
+- `DELETE /api/appointments/:id` - Cancel appointment
+- `POST /api/doctor/login` - Doctor authentication
 - `POST /api/contact` - Handle contact form submissions
 
 ### Frontend Pages
 - **Home**: Hero section, about clinic, services, and doctor overview
 - **Doctor Profile**: Detailed doctor information and availability
+- **Services**: Comprehensive service listings with detailed descriptions
 - **Booking**: Interactive appointment booking with calendar
+- **Calendar**: Public appointment calendar view
 - **Confirmation**: Appointment confirmation with details
 - **Contact**: Contact form and clinic information
+- **Doctor Login**: Secure authentication for doctor access
+- **Doctor Dashboard**: Comprehensive appointment management interface
 
 ## Data Flow
 
@@ -102,11 +111,13 @@ This is a modern, responsive dental clinic website built with React, TypeScript,
 ### Environment Configuration
 - **DATABASE_URL**: PostgreSQL connection string
 - **NODE_ENV**: Environment mode (development/production)
-- **Email Service**: Configured for appointment confirmations
+- **Email Service**: Gmail SMTP for appointment confirmations and notifications
+- **Doctor Authentication**: Simple credential-based access (username: doctor, password: dental123)
 - **Firebase**: Optional integration for enhanced features
 
 ## Changelog
 
+- July 09, 2025. Added comprehensive doctor dashboard with appointment management, email notifications, and secure authentication
 - July 08, 2025. Initial setup
 
 ## User Preferences

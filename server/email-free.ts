@@ -1,38 +1,43 @@
 import nodemailer from 'nodemailer';
-import type { Appointment } from '@shared/schema';
+import type { Appointment } from "@shared/schema";
 
-// Free Gmail SMTP solution - no API keys needed, just Gmail credentials
-let transporter: nodemailer.Transporter | null = null;
-
+// Free email service using Gmail SMTP
 async function createTransporter() {
-  if (transporter) return transporter;
+  const gmailUser = process.env.GMAIL_EMAIL;
+  const gmailPass = process.env.GMAIL_APP_PASSWORD;
   
-  // Try Gmail SMTP first (most reliable free option)
-  if (process.env.GMAIL_EMAIL && process.env.GMAIL_APP_PASSWORD) {
-    try {
-      transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: process.env.GMAIL_EMAIL,
-          pass: process.env.GMAIL_APP_PASSWORD,
-        },
-      });
-      
-      // Test the connection
-      await transporter.verify();
-      console.log('✅ Gmail SMTP connection verified');
-      return transporter;
-    } catch (error) {
-      console.error('Gmail SMTP failed, falling back to test account');
-    }
+  if (!gmailUser || !gmailPass) {
+    console.log('⚠️  Gmail credentials not found in environment variables');
+    console.log('📋 To enable real email sending, set:');
+    console.log('   - GMAIL_EMAIL: Your Gmail address');
+    console.log('   - GMAIL_APP_PASSWORD: Your Gmail app password');
+    console.log('   (Generate app password at: https://myaccount.google.com/apppasswords)');
+    return null;
   }
-  
-  // No real email credentials found - use simulation mode
+
+  try {
+    const transporter = nodemailer.createTransporter({
+      service: 'gmail',
+      auth: {
+        user: gmailUser,
+        pass: gmailPass,
+      },
+    });
+
+    // Test the connection
+    await transporter.verify();
+    console.log('✅ Gmail SMTP connection verified');
+    return transporter;
+  } catch (error) {
+    console.error('❌ Gmail SMTP connection failed:', error);
+    return null;
+  }
+}
+
+// If no Gmail credentials, simulate email sending
+if (!process.env.GMAIL_EMAIL || !process.env.GMAIL_APP_PASSWORD) {
   console.log('⚠️  No real email credentials found. Emails will only be simulated.');
   console.log('To send real emails, set up Gmail SMTP credentials.');
-  
-  // Return null to trigger simulation mode
-  return null;
 }
 
 export interface EmailParams {
@@ -212,6 +217,65 @@ export async function sendAppointmentReminder(appointment: Appointment): Promise
       Type: ${appointment.reasonForVisit}
       
       Please arrive 15 minutes early and bring your insurance card and valid ID.
+      
+      Elite Dental Care
+      Phone: (555) 123-4567
+    `
+  };
+
+  return sendEmail(emailParams);
+}
+
+export async function sendAppointmentCancellation(appointment: Appointment): Promise<boolean> {
+  const emailParams: EmailParams = {
+    to: appointment.patientEmail,
+    from: 'noreply@elitedentalcare.com',
+    subject: 'Appointment Cancelled - Elite Dental Care',
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="background-color: #333333; padding: 20px; text-align: center;">
+          <h1 style="color: #B89B4E; margin: 0;">Elite Dental Care</h1>
+        </div>
+        
+        <div style="padding: 20px; background-color: #f9f9f9;">
+          <h2 style="color: #333333;">Appointment Cancelled</h2>
+          
+          <p>Dear ${appointment.patientName},</p>
+          
+          <p>Your appointment has been cancelled. Here are the details:</p>
+          
+          <div style="background-color: white; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <h3 style="color: #333333; margin-top: 0;">Cancelled Appointment</h3>
+            <p><strong>Date:</strong> ${new Date(appointment.appointmentDate).toLocaleDateString()}</p>
+            <p><strong>Time:</strong> ${appointment.appointmentTime}</p>
+            <p><strong>Doctor:</strong> Dr. Sarah Johnson</p>
+            <p><strong>Type:</strong> ${appointment.reasonForVisit}</p>
+          </div>
+          
+          <p>If you would like to reschedule, please call us at (555) 123-4567.</p>
+          
+          <p>Thank you for choosing Elite Dental Care!</p>
+        </div>
+        
+        <div style="background-color: #333333; padding: 20px; text-align: center; color: white;">
+          <p>Elite Dental Care | 123 Dental Street, Medical Plaza, Suite 456, Healthville, HV 12345</p>
+          <p>Phone: (555) 123-4567 | Email: info@elitedentalcare.com</p>
+        </div>
+      </div>
+    `,
+    text: `
+      Appointment Cancelled
+      
+      Dear ${appointment.patientName},
+      
+      Your appointment has been cancelled:
+      
+      Date: ${new Date(appointment.appointmentDate).toLocaleDateString()}
+      Time: ${appointment.appointmentTime}
+      Doctor: Dr. Sarah Johnson
+      Type: ${appointment.reasonForVisit}
+      
+      If you would like to reschedule, please call us at (555) 123-4567.
       
       Elite Dental Care
       Phone: (555) 123-4567
