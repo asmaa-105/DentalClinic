@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, Clock, User } from "lucide-react";
+import { CalendarDays, Clock, User, RefreshCw } from "lucide-react";
 import { format } from "date-fns";
 import { Link } from "wouter";
 import type { Appointment } from "@shared/schema";
@@ -12,8 +12,10 @@ import type { Appointment } from "@shared/schema";
 export default function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
 
-  const { data: appointments, isLoading: appointmentsLoading } = useQuery({
+  const { data: appointments, isLoading: appointmentsLoading, refetch: refetchAppointments } = useQuery({
     queryKey: ['/api/appointments'],
+    refetchOnWindowFocus: true,
+    staleTime: 0,
   });
 
   const { data: availability, isLoading: availabilityLoading } = useQuery({
@@ -72,11 +74,21 @@ export default function CalendarPage() {
               View appointments and doctor availability
             </p>
           </div>
-          <Link href="/booking">
-            <Button className="bg-gold text-dark-charcoal hover:bg-warm-gold">
-              Book New Appointment
+          <div className="flex gap-3">
+            <Button 
+              onClick={() => refetchAppointments()}
+              variant="outline" 
+              className="border-gold text-gold hover:bg-gold hover:text-dark-charcoal"
+            >
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Refresh
             </Button>
-          </Link>
+            <Link href="/booking">
+              <Button className="bg-gold text-dark-charcoal hover:bg-warm-gold">
+                Book New Appointment
+              </Button>
+            </Link>
+          </div>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">

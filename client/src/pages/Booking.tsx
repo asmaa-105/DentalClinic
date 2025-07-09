@@ -54,7 +54,8 @@ export default function Booking() {
         title: "Appointment Booked!",
         description: "Your appointment has been successfully scheduled.",
       });
-      // Invalidate availability queries to update available slots
+      // Invalidate both appointments and availability queries to update the calendar
+      queryClient.invalidateQueries({ queryKey: ['/api/appointments'] });
       queryClient.invalidateQueries({ queryKey: ['/api/availability'] });
       setLocation(`/confirmation/${appointment.id}`);
     },
