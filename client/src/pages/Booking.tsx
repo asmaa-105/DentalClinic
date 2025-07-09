@@ -57,6 +57,8 @@ export default function Booking() {
       // Invalidate both appointments and availability queries to update the calendar
       queryClient.invalidateQueries({ queryKey: ['/api/appointments'] });
       queryClient.invalidateQueries({ queryKey: ['/api/availability'] });
+      // Also invalidate the specific availability query for the selected date
+      queryClient.invalidateQueries({ queryKey: [`/api/availability/1/${selectedDate}`] });
       setLocation(`/confirmation/${appointment.id}`);
     },
     onError: () => {

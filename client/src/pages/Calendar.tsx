@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
@@ -18,10 +18,20 @@ export default function CalendarPage() {
     staleTime: 0,
   });
 
-  const { data: availability, isLoading: availabilityLoading } = useQuery({
+  const { data: availability, isLoading: availabilityLoading, refetch: refetchAvailability } = useQuery({
     queryKey: [`/api/availability/1/${selectedDate ? format(selectedDate, 'yyyy-MM-dd') : ''}`],
     enabled: !!selectedDate,
+    refetchOnWindowFocus: true,
+    staleTime: 0,
+    refetchInterval: 5000, // Poll every 5 seconds
   });
+
+  // Force refresh when appointments change
+  useEffect(() => {
+    if (selectedDate) {
+      refetchAvailability();
+    }
+  }, [appointments, selectedDate, refetchAvailability]);
 
   const selectedDateString = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : '';
   const selectedAppointments = appointments?.filter(
@@ -261,14 +271,28 @@ export default function CalendarPage() {
         {/* Doctor Availability */}
         <Card className="mt-8 bg-dark-charcoal/80 backdrop-blur-sm border-gray-600 shadow-xl">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-gold">
-              <User className="w-5 h-5" />
-              Doctor Availability
-              {selectedDate && (
-                <span className="text-sm text-gray-300 font-normal">
-                  for {format(selectedDate, 'MMMM d, yyyy')}
-                </span>
-              )}
+            <CardTitle className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-gold">
+                <User className="w-5 h-5" />
+                Doctor Availability
+                {selectedDate && (
+                  <span className="text-sm text-gray-300 font-normal">
+                    for {format(selectedDate, 'MMMM d, yyyy')}
+                  </span>
+                )}
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  refetchAppointments();
+                  refetchAvailability();
+                }}
+                disabled={availabilityLoading}
+                className="bg-dark-charcoal border-gray-600 text-white hover:bg-gold hover:text-dark-charcoal"
+              >
+                <RefreshCw className={`w-4 h-4 ${availabilityLoading ? 'animate-spin' : ''}`} />
+              </Button>
             </CardTitle>
           </CardHeader>
           <CardContent>
