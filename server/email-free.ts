@@ -320,6 +320,71 @@ export async function sendAppointmentUpdate(appointment: Appointment, changeType
   return sendEmail(emailParams);
 }
 
+export async function sendContactMessage(contactData: {
+  name: string;
+  email: string;
+  phone?: string;
+  message: string;
+}): Promise<boolean> {
+  const emailParams: EmailParams = {
+    to: process.env.GMAIL_EMAIL || 'anas.dentalclinic97@gmail.com',
+    from: 'anas.dentalclinic97@gmail.com',
+    subject: `New Contact Message from ${contactData.name} - Elite Dental Care`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="background-color: #333333; padding: 20px; text-align: center;">
+          <h1 style="color: #B89B4E; margin: 0;">Elite Dental Care</h1>
+          <h2 style="color: white; margin: 10px 0 0 0; font-size: 18px;">New Contact Message</h2>
+        </div>
+        
+        <div style="padding: 20px; background-color: #f9f9f9;">
+          <h3 style="color: #333333; margin-top: 0;">Message Details</h3>
+          
+          <div style="background-color: white; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <p><strong>Name:</strong> ${contactData.name}</p>
+            <p><strong>Email:</strong> ${contactData.email}</p>
+            ${contactData.phone ? `<p><strong>Phone:</strong> ${contactData.phone}</p>` : ''}
+            <p><strong>Date:</strong> ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
+          </div>
+          
+          <div style="background-color: #B89B4E; color: white; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <h3 style="margin-top: 0;">Message</h3>
+            <p style="white-space: pre-wrap;">${contactData.message}</p>
+          </div>
+          
+          <div style="background-color: #e8f4f8; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <h3 style="color: #333333; margin-top: 0;">Reply Instructions</h3>
+            <p>You can reply directly to this email or contact ${contactData.name} at:</p>
+            <p>📧 Email: ${contactData.email}</p>
+            ${contactData.phone ? `<p>📞 Phone: ${contactData.phone}</p>` : ''}
+          </div>
+        </div>
+        
+        <div style="background-color: #333333; padding: 20px; text-align: center; color: white;">
+          <p>This message was sent through the Elite Dental Care contact form</p>
+          <p>Elite Dental Care | 123 Dental Street, Medical Plaza, Suite 456, Healthville, HV 12345</p>
+        </div>
+      </div>
+    `,
+    text: `
+      New Contact Message - Elite Dental Care
+      
+      From: ${contactData.name}
+      Email: ${contactData.email}
+      ${contactData.phone ? `Phone: ${contactData.phone}` : ''}
+      Date: ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}
+      
+      Message:
+      ${contactData.message}
+      
+      You can reply directly to this email or contact ${contactData.name} at ${contactData.email}
+      ${contactData.phone ? `or call ${contactData.phone}` : ''}
+    `
+  };
+
+  return sendEmail(emailParams);
+}
+
 export async function sendAppointmentCancellation(appointment: Appointment): Promise<boolean> {
   const emailParams: EmailParams = {
     to: appointment.patientEmail,

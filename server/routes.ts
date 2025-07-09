@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertAppointmentSchema } from "@shared/schema";
 import { z } from "zod";
-import { sendAppointmentConfirmation, sendAppointmentReminder, sendAppointmentCancellation, sendAppointmentUpdate } from "./email-free";
+import { sendAppointmentConfirmation, sendAppointmentReminder, sendAppointmentCancellation, sendAppointmentUpdate, sendContactMessage } from "./email-free";
 import { reminderScheduler } from "./reminder";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -244,15 +244,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { firstName, lastName, email, phone, subject, message } = req.body;
       
-      // TODO: Send email notification for contact form
-      // await sendContactFormNotification({
-      //   firstName,
-      //   lastName,
-      //   email,
-      //   phone,
-      //   subject,
-      //   message
-      // });
+      // Send email notification to clinic
+      try {
+        await sendContactMessage({
+          name: `${firstName} ${lastName}`,
+          email,
+          phone,
+          message: `Subject: ${subject}\n\n${message}`
+        });
+        console.log(`Contact form message sent to clinic from ${firstName} ${lastName}`);
+      } catch (emailError) {
+        console.error('Failed to send contact form email:', emailError);
+        // Don't fail the response if email fails
+      }
       
       res.json({ message: "Message sent successfully" });
     } catch (error) {
