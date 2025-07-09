@@ -76,7 +76,15 @@ export function Footer() {
         </div>
         
         <div className="border-t border-gray-600 mt-8 pt-8 text-center text-gray-300">
-          <p>&copy; 2024 Elite Dental Care. All rights reserved.</p>
+          <div className="flex justify-between items-center">
+            <p>&copy; 2024 Elite Dental Care. All rights reserved.</p>
+            <Link 
+              href="/doctor/login" 
+              className="text-xs text-gray-500 hover:text-gold transition-colors duration-200"
+            >
+              Staff Login
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

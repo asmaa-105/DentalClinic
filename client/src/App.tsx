@@ -18,12 +18,25 @@ import DoctorDashboard from "@/pages/DoctorDashboard";
 import NotFound from "@/pages/not-found";
 
 function Router() {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   
   // Scroll to top on route change
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
+  
+  // Keyboard shortcut for doctor login (Ctrl+Shift+D)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+        e.preventDefault();
+        setLocation('/doctor/login');
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [setLocation]);
   
   const isDoctorRoute = location.startsWith('/doctor/');
   
@@ -41,6 +54,8 @@ function Router() {
           <Route path="/contact" component={Contact} />
           <Route path="/doctor/login" component={DoctorLogin} />
           <Route path="/doctor/dashboard" component={DoctorDashboard} />
+          <Route path="/staff" component={DoctorLogin} />
+          <Route path="/admin" component={DoctorLogin} />
           <Route component={NotFound} />
         </Switch>
       </main>
