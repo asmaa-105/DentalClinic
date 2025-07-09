@@ -104,7 +104,11 @@ export default function Booking() {
   };
 
   const handleDateSelect = (date: Date) => {
-    const dateStr = date.toISOString().split('T')[0];
+    // Format date to avoid timezone issues
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
     setSelectedDate(dateStr);
     setSelectedTime("");
   };
@@ -173,7 +177,11 @@ export default function Booking() {
                             </div>
                           ))}
                           {days.map((date, index) => {
-                            const dateStr = date.toISOString().split('T')[0];
+                            // Format date consistently
+                            const year = date.getFullYear();
+                            const month = String(date.getMonth() + 1).padStart(2, '0');
+                            const day = String(date.getDate()).padStart(2, '0');
+                            const dateStr = `${year}-${month}-${day}`;
                             const isCurrentMonth = date.getMonth() === currentMonth.getMonth();
                             const isToday = date.toDateString() === today.toDateString();
                             const isPast = date < today;

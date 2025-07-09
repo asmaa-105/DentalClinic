@@ -28,10 +28,7 @@ export default function CalendarPage() {
     (apt: Appointment) => apt.appointmentDate === selectedDateString
   ) || [];
 
-  // Debug logging
-  console.log('Selected Date:', selectedDateString);
-  console.log('All Appointments:', appointments);
-  console.log('Selected Appointments:', selectedAppointments);
+
 
   const getAppointmentDates = () => {
     if (!appointments) return [];
