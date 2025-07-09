@@ -43,10 +43,10 @@ export function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-4 text-white">Services</h4>
             <ul className="space-y-2 text-gray-300">
-              <li><a href="#" className="hover:text-gold transition-colors duration-200">General Dentistry</a></li>
-              <li><a href="#" className="hover:text-gold transition-colors duration-200">Cosmetic Dentistry</a></li>
-              <li><a href="#" className="hover:text-gold transition-colors duration-200">Restorative Care</a></li>
-              <li><a href="#" className="hover:text-gold transition-colors duration-200">Preventive Care</a></li>
+              <li><Link href="/services" className="hover:text-gold transition-colors duration-200">General Dentistry</Link></li>
+              <li><Link href="/services" className="hover:text-gold transition-colors duration-200">Cosmetic Dentistry</Link></li>
+              <li><Link href="/services" className="hover:text-gold transition-colors duration-200">Restorative Care</Link></li>
+              <li><Link href="/services" className="hover:text-gold transition-colors duration-200">Preventive Care</Link></li>
             </ul>
           </div>
           
