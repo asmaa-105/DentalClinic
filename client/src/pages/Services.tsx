@@ -174,8 +174,8 @@ export default function Services() {
                   >
                     <CardHeader className="pb-6">
                       <div className="flex items-center justify-between mb-4">
-                        <div className={`p-4 rounded-2xl bg-gradient-to-r ${service.color} shadow-lg`}>
-                          <IconComponent className="w-8 h-8 text-white" />
+                        <div className="p-4 rounded-2xl bg-dark-grey/50 border border-gold/30 shadow-lg">
+                          <IconComponent className="w-8 h-8 text-gold" />
                         </div>
                         <Badge className="bg-gold/20 text-gold border-gold/30 px-3 py-1">
                           {service.frequency}

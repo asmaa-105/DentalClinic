@@ -319,9 +319,12 @@ export default function Booking() {
                                     <SelectValue placeholder="Select a reason" />
                                   </SelectTrigger>
                                   <SelectContent>
+                                    <SelectItem value="General Dentistry">General Dentistry</SelectItem>
+                                    <SelectItem value="Cosmetic Dentistry">Cosmetic Dentistry</SelectItem>
+                                    <SelectItem value="Restorative Care">Restorative Care</SelectItem>
+                                    <SelectItem value="Preventive Care">Preventive Care</SelectItem>
                                     <SelectItem value="Routine Cleaning">Routine Cleaning</SelectItem>
                                     <SelectItem value="Consultation">Consultation</SelectItem>
-                                    <SelectItem value="Cosmetic Procedure">Cosmetic Procedure</SelectItem>
                                     <SelectItem value="Emergency">Emergency</SelectItem>
                                     <SelectItem value="Other">Other</SelectItem>
                                   </SelectContent>

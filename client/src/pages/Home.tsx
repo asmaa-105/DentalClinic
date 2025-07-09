@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
-import { Award, Heart, Cog, Stethoscope, Smile, Wrench, Phone, Mail, Clock } from "lucide-react";
+import { Award, Heart, Cog, Stethoscope, Smile, Wrench, Phone, Mail, Clock, Shield } from "lucide-react";
 import type { Doctor } from "@shared/schema";
 
 export default function Home() {
@@ -156,42 +156,60 @@ export default function Home() {
               Our <span className="text-gold">Services</span>
             </h3>
             
-            <div className="grid md:grid-cols-3 gap-8">
-              <Card className="bg-dark-charcoal/70 backdrop-blur-sm border-gray-600 shadow-lg">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <Card className="bg-dark-charcoal/70 backdrop-blur-sm border-gray-600 shadow-lg hover:shadow-xl transition-all duration-300 group">
                 <CardContent className="p-6">
                   <div className="mb-4">
-                    <Stethoscope className="text-gold" size={48} />
+                    <Stethoscope className="text-gold group-hover:scale-110 transition-transform duration-300" size={48} />
                   </div>
                   <h4 className="text-xl font-semibold mb-3 text-white">General Dentistry</h4>
-                  <p className="text-gray-300">
+                  <p className="text-gray-300 mb-4">
                     Comprehensive oral health care including cleanings, fillings, and preventive treatments.
                   </p>
                 </CardContent>
               </Card>
               
-              <Card className="bg-dark-charcoal/70 backdrop-blur-sm border-gray-600 shadow-lg">
+              <Card className="bg-dark-charcoal/70 backdrop-blur-sm border-gray-600 shadow-lg hover:shadow-xl transition-all duration-300 group">
                 <CardContent className="p-6">
                   <div className="mb-4">
-                    <Smile className="text-gold" size={48} />
+                    <Smile className="text-gold group-hover:scale-110 transition-transform duration-300" size={48} />
                   </div>
                   <h4 className="text-xl font-semibold mb-3 text-white">Cosmetic Dentistry</h4>
-                  <p className="text-gray-300">
+                  <p className="text-gray-300 mb-4">
                     Enhance your smile with veneers, whitening, and aesthetic treatments.
                   </p>
                 </CardContent>
               </Card>
               
-              <Card className="bg-dark-charcoal/70 backdrop-blur-sm border-gray-600 shadow-lg">
+              <Card className="bg-dark-charcoal/70 backdrop-blur-sm border-gray-600 shadow-lg hover:shadow-xl transition-all duration-300 group">
                 <CardContent className="p-6">
                   <div className="mb-4">
-                    <Wrench className="text-gold" size={48} />
+                    <Wrench className="text-gold group-hover:scale-110 transition-transform duration-300" size={48} />
                   </div>
                   <h4 className="text-xl font-semibold mb-3 text-white">Restorative Care</h4>
-                  <p className="text-gray-300">
+                  <p className="text-gray-300 mb-4">
                     Restore damaged teeth with crowns, bridges, and advanced procedures.
                   </p>
                 </CardContent>
               </Card>
+              
+              <Card className="bg-dark-charcoal/70 backdrop-blur-sm border-gray-600 shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <CardContent className="p-6">
+                  <div className="mb-4">
+                    <Shield className="text-gold group-hover:scale-110 transition-transform duration-300" size={48} />
+                  </div>
+                  <h4 className="text-xl font-semibold mb-3 text-white">Preventive Care</h4>
+                  <p className="text-gray-300 mb-4">
+                    Proactive treatments to maintain optimal oral health and prevent issues.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+            
+            <div className="text-center mt-12">
+              <Button asChild className="bg-gold hover:bg-warm-gold text-dark-charcoal font-semibold px-8 py-3">
+                <Link href="/services">View All Services</Link>
+              </Button>
             </div>
           </div>
         </div>
