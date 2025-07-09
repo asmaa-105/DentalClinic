@@ -16,7 +16,7 @@ async function createTransporter() {
   }
 
   try {
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: gmailUser,
@@ -217,6 +217,100 @@ export async function sendAppointmentReminder(appointment: Appointment): Promise
       Type: ${appointment.reasonForVisit}
       
       Please arrive 15 minutes early and bring your insurance card and valid ID.
+      
+      Elite Dental Care
+      Phone: (555) 123-4567
+    `
+  };
+
+  return sendEmail(emailParams);
+}
+
+export async function sendAppointmentUpdate(appointment: Appointment, changeType: string): Promise<boolean> {
+  let subject = '';
+  let heading = '';
+  let message = '';
+  
+  switch (changeType) {
+    case 'rescheduled':
+      subject = 'Appointment Rescheduled - Elite Dental Care';
+      heading = 'Appointment Rescheduled';
+      message = 'Your appointment has been rescheduled to a new date and time:';
+      break;
+    case 'confirmed':
+      subject = 'Appointment Confirmed - Elite Dental Care';
+      heading = 'Appointment Confirmed';
+      message = 'Your appointment has been confirmed by our team:';
+      break;
+    case 'completed':
+      subject = 'Appointment Completed - Elite Dental Care';
+      heading = 'Thank You for Your Visit';
+      message = 'Thank you for visiting Elite Dental Care. Your appointment has been completed:';
+      break;
+    default:
+      subject = 'Appointment Updated - Elite Dental Care';
+      heading = 'Appointment Updated';
+      message = 'Your appointment has been updated:';
+  }
+
+  const emailParams: EmailParams = {
+    to: appointment.patientEmail,
+    from: 'noreply@elitedentalcare.com',
+    subject,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="background-color: #333333; padding: 20px; text-align: center;">
+          <h1 style="color: #B89B4E; margin: 0;">Elite Dental Care</h1>
+        </div>
+        
+        <div style="padding: 20px; background-color: #f9f9f9;">
+          <h2 style="color: #333333;">${heading}</h2>
+          
+          <p>Dear ${appointment.patientName},</p>
+          
+          <p>${message}</p>
+          
+          <div style="background-color: white; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <h3 style="color: #333333; margin-top: 0;">Appointment Details</h3>
+            <p><strong>Date:</strong> ${new Date(appointment.appointmentDate).toLocaleDateString()}</p>
+            <p><strong>Time:</strong> ${appointment.appointmentTime}</p>
+            <p><strong>Doctor:</strong> Dr. Sarah Johnson</p>
+            <p><strong>Type:</strong> ${appointment.reasonForVisit}</p>
+            <p><strong>Status:</strong> ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}</p>
+          </div>
+          
+          ${appointment.notes ? `<div style="background-color: #B89B4E; color: white; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <h3 style="margin-top: 0;">Additional Notes</h3>
+            <p>${appointment.notes}</p>
+          </div>` : ''}
+          
+          <p>If you have any questions or concerns, please call us at (555) 123-4567.</p>
+          
+          <p>Thank you for choosing Elite Dental Care!</p>
+        </div>
+        
+        <div style="background-color: #333333; padding: 20px; text-align: center; color: white;">
+          <p>Elite Dental Care | 123 Dental Street, Medical Plaza, Suite 456, Healthville, HV 12345</p>
+          <p>Phone: (555) 123-4567 | Email: info@elitedentalcare.com</p>
+        </div>
+      </div>
+    `,
+    text: `
+      ${heading}
+      
+      Dear ${appointment.patientName},
+      
+      ${message}
+      
+      Date: ${new Date(appointment.appointmentDate).toLocaleDateString()}
+      Time: ${appointment.appointmentTime}
+      Doctor: Dr. Sarah Johnson
+      Type: ${appointment.reasonForVisit}
+      Status: ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+      
+      ${appointment.notes ? `Notes: ${appointment.notes}` : ''}
+      
+      If you have any questions, please call us at (555) 123-4567.
       
       Elite Dental Care
       Phone: (555) 123-4567

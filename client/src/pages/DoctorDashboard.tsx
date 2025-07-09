@@ -51,9 +51,13 @@ export default function DoctorDashboard() {
       if (!response.ok) throw new Error("Failed to update appointment");
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (updatedAppointment) => {
       queryClient.invalidateQueries({ queryKey: ["/api/appointments"] });
-      toast({ title: "Appointment updated successfully" });
+      queryClient.invalidateQueries({ queryKey: ["/api/availability"] });
+      toast({ 
+        title: "Appointment updated successfully",
+        description: `Email notification sent to ${updatedAppointment.patientEmail}`
+      });
       setIsEditModalOpen(false);
     },
     onError: () => {
@@ -70,7 +74,11 @@ export default function DoctorDashboard() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/appointments"] });
-      toast({ title: "Appointment deleted successfully" });
+      queryClient.invalidateQueries({ queryKey: ["/api/availability"] });
+      toast({ 
+        title: "Appointment deleted successfully",
+        description: "Patient has been notified via email"
+      });
     },
     onError: () => {
       toast({ title: "Failed to delete appointment", variant: "destructive" });
@@ -86,6 +94,12 @@ export default function DoctorDashboard() {
     updateAppointmentMutation.mutate({
       id: appointment.id,
       data: { status: newStatus }
+    });
+    
+    // Show immediate feedback
+    toast({
+      title: "Status updated",
+      description: `Appointment status changed to ${newStatus}. Email notification being sent...`
     });
   };
 

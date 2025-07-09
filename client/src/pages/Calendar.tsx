@@ -35,7 +35,8 @@ export default function CalendarPage() {
 
   const selectedDateString = selectedDate ? format(selectedDate, 'yyyy-MM-dd') : '';
   const selectedAppointments = appointments?.filter(
-    (apt: Appointment) => apt.appointmentDate === selectedDateString
+    (apt: Appointment) => apt.appointmentDate === selectedDateString && 
+                          apt.status !== 'cancelled'
   ) || [];
 
 
@@ -358,14 +359,14 @@ export default function CalendarPage() {
               
               <div className="text-center p-6 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-lg border border-green-500/30">
                 <div className="text-3xl font-bold text-green-300 mb-2">
-                  {appointments?.filter((apt: Appointment) => apt.status === 'confirmed').length || 0}
+                  {appointments?.filter((apt: Appointment) => apt.status === 'confirmed' || apt.status === 'pending').length || 0}
                 </div>
                 <div className="text-sm text-green-200">Confirmed</div>
               </div>
               
               <div className="text-center p-6 bg-gradient-to-br from-gold/20 to-warm-gold/20 rounded-lg border border-gold/30">
                 <div className="text-3xl font-bold text-gold mb-2">
-                  {new Set(appointments?.map((apt: Appointment) => apt.appointmentDate)).size || 0}
+                  {new Set(appointments?.filter((apt: Appointment) => apt.status !== 'cancelled').map((apt: Appointment) => apt.appointmentDate)).size || 0}
                 </div>
                 <div className="text-sm text-gold">Busy Days</div>
               </div>

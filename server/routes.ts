@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertAppointmentSchema } from "@shared/schema";
 import { z } from "zod";
-import { sendAppointmentConfirmation, sendAppointmentReminder, sendAppointmentCancellation } from "./email-free";
+import { sendAppointmentConfirmation, sendAppointmentReminder, sendAppointmentCancellation, sendAppointmentUpdate } from "./email-free";
 import { reminderScheduler } from "./reminder";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -55,10 +55,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json({ timeSlots: [] });
       }
 
-      // Filter out booked time slots
+      // Filter out booked time slots (only confirmed and pending appointments)
       const appointments = await storage.getAppointmentsByDoctor(doctorId);
       const bookedSlots = appointments
-        .filter(apt => apt.appointmentDate === date)
+        .filter(apt => apt.appointmentDate === date && 
+                      apt.status !== 'cancelled' && 
+                      apt.status !== 'completed')
         .map(apt => apt.appointmentTime);
       
       const availableSlots = availability.timeSlots.filter(
@@ -142,10 +144,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/appointments/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
-      await storage.deleteAppointment(id);
+      const appointment = await storage.getAppointment(id);
       
-      // TODO: Send email notification for cancellation
-      // await sendAppointmentCancellation(id);
+      if (!appointment) {
+        return res.status(404).json({ message: "Appointment not found" });
+      }
+      
+      // Send cancellation email before deleting
+      try {
+        await sendAppointmentCancellation(appointment);
+        console.log(`Cancellation email sent to ${appointment.patientEmail}`);
+      } catch (emailError) {
+        console.error('Failed to send cancellation email:', emailError);
+      }
+      
+      // Cancel reminder
+      reminderScheduler.cancelReminder(id);
+      
+      // Delete the appointment
+      await storage.deleteAppointment(id);
       
       res.json({ message: "Appointment cancelled successfully" });
     } catch (error) {
@@ -181,16 +198,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const updatedAppointment = await storage.updateAppointment(id, req.body);
       
-      // Send email notification based on status change
+      // Send email notification based on changes
       try {
         if (req.body.status === "cancelled") {
           await sendAppointmentCancellation(updatedAppointment);
+          console.log(`Cancellation email sent to ${updatedAppointment.patientEmail}`);
         } else if (req.body.appointmentDate !== originalAppointment.appointmentDate || 
                    req.body.appointmentTime !== originalAppointment.appointmentTime) {
-          await sendAppointmentReminder(updatedAppointment);
+          await sendAppointmentUpdate(updatedAppointment, 'rescheduled');
+          console.log(`Rescheduling email sent to ${updatedAppointment.patientEmail}`);
+        } else if (req.body.status !== originalAppointment.status) {
+          // Status change notification
+          await sendAppointmentUpdate(updatedAppointment, req.body.status);
+          console.log(`Status change email sent to ${updatedAppointment.patientEmail}`);
+        } else if (req.body.notes !== originalAppointment.notes) {
+          // Notes updated
+          await sendAppointmentUpdate(updatedAppointment, 'updated');
+          console.log(`Update email sent to ${updatedAppointment.patientEmail}`);
         }
       } catch (emailError) {
         console.error('Failed to send notification email:', emailError);
+      }
+      
+      // Cancel existing reminder if appointment is cancelled or rescheduled
+      if (req.body.status === "cancelled" || 
+          req.body.appointmentDate !== originalAppointment.appointmentDate ||
+          req.body.appointmentTime !== originalAppointment.appointmentTime) {
+        reminderScheduler.cancelReminder(id);
+      }
+      
+      // Schedule new reminder if appointment is rescheduled
+      if (req.body.appointmentDate !== originalAppointment.appointmentDate ||
+          req.body.appointmentTime !== originalAppointment.appointmentTime) {
+        reminderScheduler.scheduleReminder(updatedAppointment);
       }
       
       res.json(updatedAppointment);
