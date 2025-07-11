@@ -12,7 +12,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api': 'https://dentalcareconnect-backend.onrender.com',
+      '/api': 'https://anasdentalclinic.onrender.com',
     },
   },
 });
