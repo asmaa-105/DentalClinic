@@ -89,9 +89,9 @@ export default function Contact() {
                     <div>
                       <h4 className="text-lg font-semibold mb-1 text-white">Address</h4>
                       <p className="text-gray-300">
-                        123 Dental Street<br />
-                        Medical Plaza, Suite 456<br />
-                        Healthville, HV 12345
+                        Al-Shahbaa District<br />
+                        Tareeq Halap<br />
+                        Hama, Syria
                       </p>
                     </div>
                   </div>
@@ -102,7 +102,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold mb-1 text-white">Phone</h4>
-                      <p className="text-gray-300">(555) 123-4567</p>
+                      <p className="text-gray-300">+963 938 114 869</p>
                     </div>
                   </div>
                   
@@ -112,7 +112,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold mb-1 text-white">Email</h4>
-                      <p className="text-gray-300">info@elitedentalcare.com</p>
+                      <p className="text-gray-300">anas.dentalclinic97@gmail.com</p>
                     </div>
                   </div>
                   
@@ -123,9 +123,9 @@ export default function Contact() {
                     <div>
                       <h4 className="text-lg font-semibold mb-1 text-white">Office Hours</h4>
                       <div className="text-gray-300 space-y-1">
-                        <p>Monday - Friday: 8:00 AM - 6:00 PM</p>
+                        <p>Sunday - Thursday: 9:00 AM - 6:00 PM</p>
                         <p>Saturday: 9:00 AM - 3:00 PM</p>
-                        <p>Sunday: Closed</p>
+                        <p>Friday: Closed</p>
                       </div>
                     </div>
                   </div>
@@ -136,7 +136,7 @@ export default function Contact() {
                   <p className="text-gray-300 mb-2">
                     For dental emergencies outside office hours:
                   </p>
-                  <p className="text-gold font-semibold">(555) 123-URGENT</p>
+                  <p className="text-gold font-semibold">+963 938 114 869</p>
                 </div>
               </div>
 

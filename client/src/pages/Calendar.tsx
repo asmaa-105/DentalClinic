@@ -304,7 +304,7 @@ export default function CalendarPage() {
             ) : selectedDate ? (
               <div>
                 <div className="mb-4">
-                  <h3 className="font-semibold text-white mb-2">Dr. Sarah Johnson</h3>
+                  <h3 className="font-semibold text-white mb-2">Dr. Anas Alhamou</h3>
                   <p className="text-sm text-gray-300">General Dentist</p>
                 </div>
                 {availability?.timeSlots && availability.timeSlots.length > 0 ? (

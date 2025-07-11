@@ -75,8 +75,8 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
     
     // Use Gmail if available, otherwise use provided from address
     const fromAddress = process.env.GMAIL_EMAIL 
-      ? `"Elite Dental Care" <${process.env.GMAIL_EMAIL}>`
-      : `"Elite Dental Care" <${params.from}>`;
+      ? `"Anas Dental Clinic" <${process.env.GMAIL_EMAIL}>`
+      : `"Anas Dental Clinic" <${params.from}>`;
     
     const info = await emailTransporter.sendMail({
       from: fromAddress,
@@ -101,11 +101,11 @@ export async function sendAppointmentConfirmation(appointment: Appointment): Pro
   const emailParams: EmailParams = {
     to: appointment.patientEmail,
     from: 'anas.dentalclinic97@gmail.com',
-    subject: 'Appointment Confirmation - Elite Dental Care',
+    subject: 'Appointment Confirmation - Anas Dental Clinic',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background-color: #333333; padding: 20px; text-align: center;">
-          <h1 style="color: #B89B4E; margin: 0;">Elite Dental Care</h1>
+          <h1 style="color: #B89B4E; margin: 0;">Anas Dental Clinic</h1>
         </div>
         
         <div style="padding: 20px; background-color: #f9f9f9;">
@@ -119,9 +119,9 @@ export async function sendAppointmentConfirmation(appointment: Appointment): Pro
             <h3 style="color: #333333; margin-top: 0;">Appointment Details</h3>
             <p><strong>Date:</strong> ${new Date(appointment.appointmentDate).toLocaleDateString()}</p>
             <p><strong>Time:</strong> ${appointment.appointmentTime}</p>
-            <p><strong>Doctor:</strong> Dr. Sarah Johnson</p>
+            <p><strong>Doctor:</strong> Dr. Anas Alhamou</p>
             <p><strong>Type:</strong> ${appointment.reasonForVisit}</p>
-            <p><strong>Location:</strong> Elite Dental Care</p>
+            <p><strong>Location:</strong> Anas Dental Clinic</p>
           </div>
           
           <div style="background-color: #B89B4E; color: white; padding: 15px; border-radius: 5px; margin: 20px 0;">
@@ -133,14 +133,14 @@ export async function sendAppointmentConfirmation(appointment: Appointment): Pro
             </ul>
           </div>
           
-          <p>If you need to reschedule or cancel, please call us at (555) 123-4567.</p>
+          <p>If you need to reschedule or cancel, please call us at +963 938 114 869.</p>
           
-          <p>Thank you for choosing Elite Dental Care!</p>
+          <p>Thank you for choosing Anas Dental Clinic!</p>
         </div>
         
         <div style="background-color: #333333; padding: 20px; text-align: center; color: white;">
-          <p>Elite Dental Care | 123 Dental Street, Medical Plaza, Suite 456, Healthville, HV 12345</p>
-          <p>Phone: (555) 123-4567 | Email: info@elitedentalcare.com</p>
+          <p>Anas Dental Clinic | Al-Shahbaa District, Aleppo Road, Hama, Syria</p>
+          <p>Phone: +963 938 114 869 | Email: anas.dentalclinic97@gmail.com</p>
         </div>
       </div>
     `,
@@ -153,13 +153,13 @@ export async function sendAppointmentConfirmation(appointment: Appointment): Pro
       
       Date: ${new Date(appointment.appointmentDate).toLocaleDateString()}
       Time: ${appointment.appointmentTime}
-      Doctor: Dr. Sarah Johnson
+      Doctor: Dr. Anas Alhamou
       Type: ${appointment.reasonForVisit}
       
       Please arrive 15 minutes early and bring your insurance card and valid ID.
       
-      Elite Dental Care
-      Phone: (555) 123-4567
+      Anas Dental Clinic
+      Phone: +963 938 114 869
     `
   };
 
@@ -170,11 +170,11 @@ export async function sendAppointmentReminder(appointment: Appointment): Promise
   const emailParams: EmailParams = {
     to: appointment.patientEmail,
     from: 'anas.dentalclinic97@gmail.com',
-    subject: 'Appointment Reminder - Elite Dental Care',
+    subject: 'Appointment Reminder - Anas Dental Clinic',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background-color: #333333; padding: 20px; text-align: center;">
-          <h1 style="color: #B89B4E; margin: 0;">Elite Dental Care</h1>
+          <h1 style="color: #B89B4E; margin: 0;">Anas Dental Clinic</h1>
         </div>
         
         <div style="padding: 20px; background-color: #f9f9f9;">
@@ -188,19 +188,19 @@ export async function sendAppointmentReminder(appointment: Appointment): Promise
             <h3 style="color: #333333; margin-top: 0;">Tomorrow's Appointment</h3>
             <p><strong>Date:</strong> ${new Date(appointment.appointmentDate).toLocaleDateString()}</p>
             <p><strong>Time:</strong> ${appointment.appointmentTime}</p>
-            <p><strong>Doctor:</strong> Dr. Sarah Johnson</p>
+            <p><strong>Doctor:</strong> Dr. Anas Alhamou</p>
             <p><strong>Type:</strong> ${appointment.reasonForVisit}</p>
           </div>
           
           <p>Please arrive 15 minutes early and bring your insurance card and valid ID.</p>
           
-          <p>If you need to reschedule or cancel, please call us at (555) 123-4567.</p>
+          <p>If you need to reschedule or cancel, please call us at +963 938 114 869.</p>
           
           <p>We look forward to seeing you tomorrow!</p>
         </div>
         
         <div style="background-color: #333333; padding: 20px; text-align: center; color: white;">
-          <p>Elite Dental Care | 123 Dental Street, Medical Plaza, Suite 456, Healthville, HV 12345</p>
+          <p>Anas Dental Clinic | Al-Shahbaa District, Aleppo Road, Hama, Syria</p>
         </div>
       </div>
     `,
@@ -213,13 +213,13 @@ export async function sendAppointmentReminder(appointment: Appointment): Promise
       
       Date: ${new Date(appointment.appointmentDate).toLocaleDateString()}
       Time: ${appointment.appointmentTime}
-      Doctor: Dr. Sarah Johnson
+      Doctor: Dr. Anas Alhamou
       Type: ${appointment.reasonForVisit}
       
       Please arrive 15 minutes early and bring your insurance card and valid ID.
       
-      Elite Dental Care
-      Phone: (555) 123-4567
+      Anas Dental Clinic
+      Phone: +963 938 114 869
     `
   };
 
@@ -233,22 +233,22 @@ export async function sendAppointmentUpdate(appointment: Appointment, changeType
   
   switch (changeType) {
     case 'rescheduled':
-      subject = 'Appointment Rescheduled - Elite Dental Care';
+      subject = 'Appointment Rescheduled - Anas Dental Clinic';
       heading = 'Appointment Rescheduled';
       message = 'Your appointment has been rescheduled to a new date and time:';
       break;
     case 'confirmed':
-      subject = 'Appointment Confirmed - Elite Dental Care';
+      subject = 'Appointment Confirmed - Anas Dental Clinic';
       heading = 'Appointment Confirmed';
       message = 'Your appointment has been confirmed by our team:';
       break;
     case 'completed':
-      subject = 'Appointment Completed - Elite Dental Care';
+      subject = 'Appointment Completed - Anas Dental Clinic';
       heading = 'Thank You for Your Visit';
-      message = 'Thank you for visiting Elite Dental Care. Your appointment has been completed:';
+      message = 'Thank you for visiting Anas Dental Clinic. Your appointment has been completed:';
       break;
     default:
-      subject = 'Appointment Updated - Elite Dental Care';
+      subject = 'Appointment Updated - Anas Dental Clinic';
       heading = 'Appointment Updated';
       message = 'Your appointment has been updated:';
   }
@@ -260,7 +260,7 @@ export async function sendAppointmentUpdate(appointment: Appointment, changeType
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background-color: #333333; padding: 20px; text-align: center;">
-          <h1 style="color: #B89B4E; margin: 0;">Elite Dental Care</h1>
+          <h1 style="color: #B89B4E; margin: 0;">Anas Dental Clinic</h1>
         </div>
         
         <div style="padding: 20px; background-color: #f9f9f9;">
@@ -274,7 +274,7 @@ export async function sendAppointmentUpdate(appointment: Appointment, changeType
             <h3 style="color: #333333; margin-top: 0;">Appointment Details</h3>
             <p><strong>Date:</strong> ${new Date(appointment.appointmentDate).toLocaleDateString()}</p>
             <p><strong>Time:</strong> ${appointment.appointmentTime}</p>
-            <p><strong>Doctor:</strong> Dr. Sarah Johnson</p>
+            <p><strong>Doctor:</strong> Dr. Anas Alhamou</p>
             <p><strong>Type:</strong> ${appointment.reasonForVisit}</p>
             <p><strong>Status:</strong> ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}</p>
           </div>
@@ -284,14 +284,14 @@ export async function sendAppointmentUpdate(appointment: Appointment, changeType
             <p>${appointment.notes}</p>
           </div>` : ''}
           
-          <p>If you have any questions or concerns, please call us at (555) 123-4567.</p>
+          <p>If you have any questions or concerns, please call us at +963 938 114 869.</p>
           
-          <p>Thank you for choosing Elite Dental Care!</p>
+          <p>Thank you for choosing Anas Dental Clinic!</p>
         </div>
         
         <div style="background-color: #333333; padding: 20px; text-align: center; color: white;">
-          <p>Elite Dental Care | 123 Dental Street, Medical Plaza, Suite 456, Healthville, HV 12345</p>
-          <p>Phone: (555) 123-4567 | Email: info@elitedentalcare.com</p>
+          <p>Anas Dental Clinic | Al-Shahbaa District, Aleppo Road, Hama, Syria</p>
+          <p>Phone: +963 938 114 869 | Email: anas.dentalclinic97@gmail.com</p>
         </div>
       </div>
     `,
@@ -304,16 +304,16 @@ export async function sendAppointmentUpdate(appointment: Appointment, changeType
       
       Date: ${new Date(appointment.appointmentDate).toLocaleDateString()}
       Time: ${appointment.appointmentTime}
-      Doctor: Dr. Sarah Johnson
+      Doctor: Dr. Anas Alhamou
       Type: ${appointment.reasonForVisit}
       Status: ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
       
       ${appointment.notes ? `Notes: ${appointment.notes}` : ''}
       
-      If you have any questions, please call us at (555) 123-4567.
+      If you have any questions, please call us at +963 938 114 869.
       
-      Elite Dental Care
-      Phone: (555) 123-4567
+      Anas Dental Clinic
+      Phone: +963 938 114 869
     `
   };
 
@@ -329,11 +329,11 @@ export async function sendContactMessage(contactData: {
   const emailParams: EmailParams = {
     to: process.env.GMAIL_EMAIL || 'anas.dentalclinic97@gmail.com',
     from: 'anas.dentalclinic97@gmail.com',
-    subject: `New Contact Message from ${contactData.name} - Elite Dental Care`,
+    subject: `New Contact Message from ${contactData.name} - Anas Dental Clinic`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background-color: #333333; padding: 20px; text-align: center;">
-          <h1 style="color: #B89B4E; margin: 0;">Elite Dental Care</h1>
+          <h1 style="color: #B89B4E; margin: 0;">Anas Dental Clinic</h1>
           <h2 style="color: white; margin: 10px 0 0 0; font-size: 18px;">New Contact Message</h2>
         </div>
         
@@ -361,13 +361,13 @@ export async function sendContactMessage(contactData: {
         </div>
         
         <div style="background-color: #333333; padding: 20px; text-align: center; color: white;">
-          <p>This message was sent through the Elite Dental Care contact form</p>
-          <p>Elite Dental Care | 123 Dental Street, Medical Plaza, Suite 456, Healthville, HV 12345</p>
+          <p>This message was sent through the Anas Dental Clinic contact form</p>
+          <p>Anas Dental Clinic | Al-Shahbaa District, Aleppo Road, Hama, Syria</p>
         </div>
       </div>
     `,
     text: `
-      New Contact Message - Elite Dental Care
+      New Contact Message - Anas Dental Clinic
       
       From: ${contactData.name}
       Email: ${contactData.email}
@@ -389,11 +389,11 @@ export async function sendAppointmentCancellation(appointment: Appointment): Pro
   const emailParams: EmailParams = {
     to: appointment.patientEmail,
     from: 'anas.dentalclinic97@gmail.com',
-    subject: 'Appointment Cancelled - Elite Dental Care',
+    subject: 'Appointment Cancelled - Anas Dental Clinic',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background-color: #333333; padding: 20px; text-align: center;">
-          <h1 style="color: #B89B4E; margin: 0;">Elite Dental Care</h1>
+          <h1 style="color: #B89B4E; margin: 0;">Anas Dental Clinic</h1>
         </div>
         
         <div style="padding: 20px; background-color: #f9f9f9;">
@@ -407,18 +407,18 @@ export async function sendAppointmentCancellation(appointment: Appointment): Pro
             <h3 style="color: #333333; margin-top: 0;">Cancelled Appointment</h3>
             <p><strong>Date:</strong> ${new Date(appointment.appointmentDate).toLocaleDateString()}</p>
             <p><strong>Time:</strong> ${appointment.appointmentTime}</p>
-            <p><strong>Doctor:</strong> Dr. Sarah Johnson</p>
+            <p><strong>Doctor:</strong> Dr. Anas Alhamou</p>
             <p><strong>Type:</strong> ${appointment.reasonForVisit}</p>
           </div>
           
-          <p>If you would like to reschedule, please call us at (555) 123-4567.</p>
+          <p>If you would like to reschedule, please call us at +963 938 114 869.</p>
           
-          <p>Thank you for choosing Elite Dental Care!</p>
+          <p>Thank you for choosing Anas Dental Clinic!</p>
         </div>
         
         <div style="background-color: #333333; padding: 20px; text-align: center; color: white;">
-          <p>Elite Dental Care | 123 Dental Street, Medical Plaza, Suite 456, Healthville, HV 12345</p>
-          <p>Phone: (555) 123-4567 | Email: info@elitedentalcare.com</p>
+          <p>Anas Dental Clinic | Al-Shahbaa District, Aleppo Road, Hama, Syria</p>
+          <p>Phone: +963 938 114 869 | Email: anas.dentalclinic97@gmail.com</p>
         </div>
       </div>
     `,
@@ -431,13 +431,13 @@ export async function sendAppointmentCancellation(appointment: Appointment): Pro
       
       Date: ${new Date(appointment.appointmentDate).toLocaleDateString()}
       Time: ${appointment.appointmentTime}
-      Doctor: Dr. Sarah Johnson
+      Doctor: Dr. Anas Alhamou
       Type: ${appointment.reasonForVisit}
       
-      If you would like to reschedule, please call us at (555) 123-4567.
+      If you would like to reschedule, please call us at +963 938 114 869.
       
-      Elite Dental Care
-      Phone: (555) 123-4567
+      Anas Dental Clinic
+      Phone: +963 938 114 869
     `
   };
 

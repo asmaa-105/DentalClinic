@@ -13,7 +13,7 @@ export function Footer() {
           <div>
             <div className="flex items-center space-x-3 mb-4">
               <Heart className="text-gold text-2xl" />
-              <h3 className="text-xl font-bold text-white">Elite Dental Care</h3>
+              <h3 className="text-xl font-bold text-white">Anas Dental Clinic</h3>
             </div>
             <p className="text-gray-300 mb-4">
               Providing exceptional dental care with a personal touch in a modern, comfortable environment.
@@ -61,15 +61,15 @@ export function Footer() {
             <ul className="space-y-2 text-gray-300">
               <li className="flex items-center">
                 <Phone className="text-gold mr-2" size={16} />
-                (555) 123-4567
+                +963 938 114 869
               </li>
               <li className="flex items-center">
                 <Mail className="text-gold mr-2" size={16} />
-                info@elitedentalcare.com
+                anas.dentalclinic97@gmail.com
               </li>
               <li className="flex items-start">
                 <MapPin className="text-gold mr-2 mt-1" size={16} />
-                <span>123 Dental Street<br />Medical Plaza, Suite 456<br />Healthville, HV 12345</span>
+                <span>Al-Shahbaa District<br />Tareeq Halap<br />Hama, Syria</span>
               </li>
             </ul>
           </div>
@@ -77,7 +77,7 @@ export function Footer() {
         
         <div className="border-t border-gray-600 mt-8 pt-8 text-center text-gray-300">
           <div className="flex justify-between items-center">
-            <p>&copy; 2024 Elite Dental Care. All rights reserved.</p>
+            <p>&copy; 2025 Anas Dental Clinic. All rights reserved.</p>
             <Link 
               href="/doctor/login" 
               className="text-xs text-gray-500 hover:text-gold transition-colors duration-200"

@@ -29,7 +29,7 @@ export function Header() {
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-3">
             <Heart className="text-gold text-2xl" />
-            <h1 className="text-xl font-bold text-white">Elite Dental Care</h1>
+            <h1 className="text-xl font-bold text-white">Anas Dental Clinic</h1>
           </Link>
           
           <nav className="hidden md:flex space-x-8">
