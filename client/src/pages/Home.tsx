@@ -85,7 +85,7 @@ export default function Home() {
                   zIndex: 1,
                   left: "99%",
                   top: "0.1%",
-                  transform: "translate(-45%, -80%)",
+                  transform: "translate(-70%, -70%)",
                 }}
               />
               {/* Logo image */}
@@ -96,7 +96,7 @@ export default function Home() {
                 style={{ filter: "none",
                   left: "99%",
                   top: "0.1%",
-                  transform: "translate(-45%, -80%)",
+                  transform: "translate(-70%, -70%)",
 
                  }}
               />
