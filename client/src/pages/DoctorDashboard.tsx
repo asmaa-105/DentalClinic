@@ -11,6 +11,7 @@ import { Calendar, Clock, User, Phone, Mail, Edit, Trash2, LogOut, Search, Filte
 import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
+import { apiFetch } from "@/lib/api"; // adjust path as needed
 import type { Appointment } from "@shared/schema";
 
 const statusColors = {
@@ -43,7 +44,7 @@ export default function DoctorDashboard() {
 
   const updateAppointmentMutation = useMutation({
     mutationFn: async ({ id, data }: { id: number; data: Partial<Appointment> }) => {
-      const response = await fetch(`/api/appointments/${id}`, {
+      const response = await apiFetch(`/api/appointments/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
@@ -67,7 +68,7 @@ export default function DoctorDashboard() {
 
   const deleteAppointmentMutation = useMutation({
     mutationFn: async (id: number) => {
-      const response = await fetch(`/api/appointments/${id}`, {
+      const response = await apiFetch(`/api/appointments/${id}`, {
         method: "DELETE"
       });
       if (!response.ok) throw new Error("Failed to delete appointment");

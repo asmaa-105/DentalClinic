@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Heart, Eye, EyeOff, Shield } from "lucide-react";
 import { useLocation } from "wouter";
+import { apiFetch } from "@/lib/api"; // adjust path as needed
+
 
 const loginSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -35,7 +37,7 @@ export default function DoctorLogin() {
     setError(null);
 
     try {
-      const response = await fetch("/api/doctor/login", {
+      const response = await apiFetch("/api/doctor/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)

@@ -1,8 +1,9 @@
 import type { Appointment } from "@shared/schema";
+import { apiFetch } from "@/lib/api";
 
 // Email service configuration
-const EMAIL_SERVICE_API_KEY = process.env.EMAIL_SERVICE_API_KEY || process.env.SENDGRID_API_KEY || "your-email-api-key";
-const EMAIL_SERVICE_ENDPOINT = process.env.EMAIL_SERVICE_ENDPOINT || "https://api.sendgrid.com/v3/mail/send";
+const EMAIL_SERVICE_API_KEY = import.meta.env.VITE_EMAIL_SERVICE_API_KEY || "anas.dentalclinic97@gmail.com";
+const EMAIL_SERVICE_ENDPOINT = import.meta.env.VITE_EMAIL_SERVICE_ENDPOINT || "https://dentalcareconnect-backend.onrender.com";
 
 export interface EmailData {
   to: string;
@@ -13,7 +14,7 @@ export interface EmailData {
 
 export async function sendEmail(emailData: EmailData): Promise<void> {
   try {
-    const response = await fetch(EMAIL_SERVICE_ENDPOINT, {
+    const response = await apiFetch(EMAIL_SERVICE_ENDPOINT, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${EMAIL_SERVICE_API_KEY}`,
