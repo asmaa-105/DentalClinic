@@ -3,7 +3,7 @@ import { apiFetch } from "@/lib/api";
 
 // Email service configuration
 const EMAIL_SERVICE_API_KEY = import.meta.env.VITE_EMAIL_SERVICE_API_KEY || "anas.dentalclinic97@gmail.com";
-const EMAIL_SERVICE_ENDPOINT = import.meta.env.VITE_EMAIL_SERVICE_ENDPOINT || "https://anasdentalclinic.onrender.com";
+const EMAIL_SERVICE_ENDPOINT = import.meta.env.VITE_EMAIL_SERVICE_ENDPOINT || "https://anasdentalclinic-j9lz.onrender.com";
 
 export interface EmailData {
   to: string;
