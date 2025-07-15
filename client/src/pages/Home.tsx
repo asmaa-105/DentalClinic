@@ -46,9 +46,7 @@ export default function Home() {
         <div className="container mx-auto px-4 py-20 md:py-32">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             {/* Left: Text */}
-            <div className="max-w-2xl z-20">
-              {" "}
-              {/* z-20 ensures text is above any background */}
+            <div className="max-w-2xl z-20 w-full">
               <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white">
                 Your Smile, <span className="text-gold">Our Priority</span>
               </h2>
@@ -71,10 +69,28 @@ export default function Home() {
                   <Link href="/doctor">Learn More</Link>
                 </Button>
               </div>
+              {/* Mobile Logo */}
+              <div className="flex md:hidden justify-center mt-8 relative">
+                <div
+                  className="absolute inset-0 rounded-full mx-auto"
+                  style={{
+                    width: "160px",
+                    height: "160px",
+                    background: "rgba(255, 255, 255, 0.18)",
+                    filter: "blur(18px)",
+                    zIndex: 1,
+                  }}
+                />
+                <img
+                  src="/attached_assets/2.png"
+                  alt="Anas Dental Clinic Logo"
+                  className="relative w-[160px] h-auto z-10"
+                  style={{ filter: "none" }}
+                />
+              </div>
             </div>
-            {/* Right: Logo with blurred background */}
-            <div className="absolute top-6 right-8 z-20 flex items-center">
-              {/* Blurry circular background */}
+            {/* Right: Logo with blurred background (Desktop only) */}
+            <div className="hidden md:flex absolute top-6 right-8 z-20 items-center">
               <div
                 className="absolute inset-0 rounded-full"
                 style={{
@@ -85,13 +101,11 @@ export default function Home() {
                   zIndex: 1,
                 }}
               />
-              {/* Logo image */}
               <img
                 src="/attached_assets/2.png"
                 alt="Anas Dental Clinic Logo"
                 className="relative w-[220px] md:w-[200px] lg:w-[240px] h-auto z-10"
-                style={{ filter: "none",
-                 }}
+                style={{ filter: "none" }}
               />
             </div>
           </div>
@@ -197,12 +211,6 @@ export default function Home() {
                       <p className="text-gray-300 mb-6">
                         {doctor.bio.substring(0, 200)}...
                       </p>
-                      {/* <div className="flex items-center gap-4 mb-6">
-                        <div className="flex items-center">
-                          <Award className="text-gold mr-2" size={20} />
-                          <span className="text-gray-300">{doctor.experience} years experience</span>
-                        </div>
-                      </div> */}
                       <Button
                         asChild
                         className="bg-gold hover:bg-warm-gold text-dark-charcoal font-semibold"
