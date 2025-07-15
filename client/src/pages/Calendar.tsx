@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { CalendarDays, Clock, User, RefreshCw } from "lucide-react";
 import { format } from "date-fns";
 import { Link } from "wouter";
-import type { Appointment } from "@shared/schema";
+import type { Appointment } from "@shared/types";
 
 export default function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());

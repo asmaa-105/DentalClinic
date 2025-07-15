@@ -3,7 +3,7 @@ import { useLocation, useRoute } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Check, Calendar, Clock, User, MapPin, Download } from "lucide-react";
-import type { Appointment } from "@shared/schema";
+import type { Appointment } from "@shared/types";
 
 export default function Confirmation() {
   const [, setLocation] = useLocation();

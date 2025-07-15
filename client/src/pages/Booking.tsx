@@ -5,13 +5,26 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { insertAppointmentSchema } from "@shared/schema";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import type { InsertAppointment } from "@shared/types";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { z } from "zod";
@@ -55,10 +68,12 @@ export default function Booking() {
         description: "Your appointment has been successfully scheduled.",
       });
       // Invalidate both appointments and availability queries to update the calendar
-      queryClient.invalidateQueries({ queryKey: ['/api/appointments'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/availability'] });
+      queryClient.invalidateQueries({ queryKey: ["/api/appointments"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/availability"] });
       // Also invalidate the specific availability query for the selected date
-      queryClient.invalidateQueries({ queryKey: [`/api/availability/1/${selectedDate}`] });
+      queryClient.invalidateQueries({
+        queryKey: [`/api/availability/1/${selectedDate}`],
+      });
       setLocation(`/confirmation/${appointment.id}`);
     },
     onError: () => {
@@ -108,8 +123,8 @@ export default function Booking() {
   const handleDateSelect = (date: Date) => {
     // Format date to avoid timezone issues
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     const dateStr = `${year}-${month}-${day}`;
     setSelectedDate(dateStr);
     setSelectedTime("");
@@ -120,11 +135,15 @@ export default function Booking() {
   };
 
   const nextMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
+    setCurrentMonth(
+      new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1)
+    );
   };
 
   const prevMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
+    setCurrentMonth(
+      new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1)
+    );
   };
 
   const days = generateCalendarDays();
@@ -141,13 +160,15 @@ export default function Booking() {
             <p className="text-xl text-center text-gray-300 mb-12">
               Schedule your visit with Dr. Johnson
             </p>
-            
+
             <Card className="bg-dark-grey border-gray-600 shadow-xl">
               <CardContent className="p-8 md:p-12">
                 <div className="grid md:grid-cols-2 gap-8">
                   {/* Calendar Section */}
                   <div>
-                    <h3 className="text-2xl font-semibold mb-6 text-white">Select Date</h3>
+                    <h3 className="text-2xl font-semibold mb-6 text-white">
+                      Select Date
+                    </h3>
                     <Card className="bg-dark-charcoal border-gray-600">
                       <CardContent className="p-6">
                         <div className="flex items-center justify-between mb-4">
@@ -160,7 +181,10 @@ export default function Booking() {
                             <ChevronLeft size={20} />
                           </Button>
                           <h4 className="text-lg font-semibold text-white">
-                            {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                            {currentMonth.toLocaleDateString("en-US", {
+                              month: "long",
+                              year: "numeric",
+                            })}
                           </h4>
                           <Button
                             variant="ghost"
@@ -171,24 +195,40 @@ export default function Booking() {
                             <ChevronRight size={20} />
                           </Button>
                         </div>
-                        
+
                         <div className="grid grid-cols-7 gap-1 text-center">
-                          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                            <div key={day} className="p-2 text-sm font-medium text-gray-400">
+                          {[
+                            "Sun",
+                            "Mon",
+                            "Tue",
+                            "Wed",
+                            "Thu",
+                            "Fri",
+                            "Sat",
+                          ].map((day) => (
+                            <div
+                              key={day}
+                              className="p-2 text-sm font-medium text-gray-400"
+                            >
                               {day}
                             </div>
                           ))}
                           {days.map((date, index) => {
                             // Format date consistently
                             const year = date.getFullYear();
-                            const month = String(date.getMonth() + 1).padStart(2, '0');
-                            const day = String(date.getDate()).padStart(2, '0');
+                            const month = String(date.getMonth() + 1).padStart(
+                              2,
+                              "0"
+                            );
+                            const day = String(date.getDate()).padStart(2, "0");
                             const dateStr = `${year}-${month}-${day}`;
-                            const isCurrentMonth = date.getMonth() === currentMonth.getMonth();
-                            const isToday = date.toDateString() === today.toDateString();
+                            const isCurrentMonth =
+                              date.getMonth() === currentMonth.getMonth();
+                            const isToday =
+                              date.toDateString() === today.toDateString();
                             const isPast = date < today;
                             const isSelected = selectedDate === dateStr;
-                            
+
                             return (
                               <button
                                 key={index}
@@ -196,10 +236,10 @@ export default function Booking() {
                                 disabled={!isCurrentMonth || isPast}
                                 className={`p-2 text-sm rounded transition-colors ${
                                   isSelected
-                                    ? 'bg-gold text-dark-charcoal'
+                                    ? "bg-gold text-dark-charcoal"
                                     : !isCurrentMonth || isPast
-                                    ? 'text-gray-500 cursor-not-allowed'
-                                    : 'text-white hover:bg-gold hover:text-dark-charcoal'
+                                      ? "text-gray-500 cursor-not-allowed"
+                                      : "text-white hover:bg-gold hover:text-dark-charcoal"
                                 }`}
                               >
                                 {date.getDate()}
@@ -213,17 +253,24 @@ export default function Booking() {
 
                   {/* Time Slots Section */}
                   <div>
-                    <h3 className="text-2xl font-semibold mb-6 text-white">Available Times</h3>
+                    <h3 className="text-2xl font-semibold mb-6 text-white">
+                      Available Times
+                    </h3>
                     <div className="space-y-3">
                       {selectedDate ? (
                         availabilityLoading ? (
-                          <div className="text-gray-300">Loading available times...</div>
-                        ) : availability?.timeSlots && availability.timeSlots.length > 0 ? (
+                          <div className="text-gray-300">
+                            Loading available times...
+                          </div>
+                        ) : availability?.timeSlots &&
+                          availability.timeSlots.length > 0 ? (
                           <div className="grid grid-cols-2 gap-3">
                             {availability.timeSlots.map((time: string) => (
                               <Button
                                 key={time}
-                                variant={selectedTime === time ? "default" : "outline"}
+                                variant={
+                                  selectedTime === time ? "default" : "outline"
+                                }
                                 onClick={() => handleTimeSelect(time)}
                                 className={
                                   selectedTime === time
@@ -236,10 +283,14 @@ export default function Booking() {
                             ))}
                           </div>
                         ) : (
-                          <div className="text-gray-300">No available time slots for this date</div>
+                          <div className="text-gray-300">
+                            No available time slots for this date
+                          </div>
                         )
                       ) : (
-                        <div className="text-gray-300">Please select a date first</div>
+                        <div className="text-gray-300">
+                          Please select a date first
+                        </div>
                       )}
                     </div>
                   </div>
@@ -247,16 +298,23 @@ export default function Booking() {
 
                 {/* Booking Form */}
                 <div className="mt-12">
-                  <h3 className="text-2xl font-semibold mb-6 text-white">Patient Information</h3>
+                  <h3 className="text-2xl font-semibold mb-6 text-white">
+                    Patient Information
+                  </h3>
                   <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <form
+                      onSubmit={form.handleSubmit(onSubmit)}
+                      className="space-y-6"
+                    >
                       <div className="grid md:grid-cols-2 gap-6">
                         <FormField
                           control={form.control}
                           name="patientName"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-white">Full Name</FormLabel>
+                              <FormLabel className="text-white">
+                                Full Name
+                              </FormLabel>
                               <FormControl>
                                 <Input
                                   {...field}
@@ -273,7 +331,9 @@ export default function Booking() {
                           name="patientEmail"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-white">Email</FormLabel>
+                              <FormLabel className="text-white">
+                                Email
+                              </FormLabel>
                               <FormControl>
                                 <Input
                                   {...field}
@@ -287,14 +347,16 @@ export default function Booking() {
                           )}
                         />
                       </div>
-                      
+
                       <div className="grid md:grid-cols-2 gap-6">
                         <FormField
                           control={form.control}
                           name="patientPhone"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-white">Phone</FormLabel>
+                              <FormLabel className="text-white">
+                                Phone
+                              </FormLabel>
                               <FormControl>
                                 <Input
                                   {...field}
@@ -312,20 +374,39 @@ export default function Booking() {
                           name="reasonForVisit"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-white">Reason for Visit</FormLabel>
+                              <FormLabel className="text-white">
+                                Reason for Visit
+                              </FormLabel>
                               <FormControl>
-                                <Select value={field.value} onValueChange={field.onChange}>
+                                <Select
+                                  value={field.value}
+                                  onValueChange={field.onChange}
+                                >
                                   <SelectTrigger className="bg-dark-charcoal border-gray-600 text-white focus:border-gold">
                                     <SelectValue placeholder="Select a reason" />
                                   </SelectTrigger>
                                   <SelectContent>
-                                    <SelectItem value="General Dentistry">General Dentistry</SelectItem>
-                                    <SelectItem value="Cosmetic Dentistry">Cosmetic Dentistry</SelectItem>
-                                    <SelectItem value="Restorative Care">Restorative Care</SelectItem>
-                                    <SelectItem value="Preventive Care">Preventive Care</SelectItem>
-                                    <SelectItem value="Routine Cleaning">Routine Cleaning</SelectItem>
-                                    <SelectItem value="Consultation">Consultation</SelectItem>
-                                    <SelectItem value="Emergency">Emergency</SelectItem>
+                                    <SelectItem value="General Dentistry">
+                                      General Dentistry
+                                    </SelectItem>
+                                    <SelectItem value="Cosmetic Dentistry">
+                                      Cosmetic Dentistry
+                                    </SelectItem>
+                                    <SelectItem value="Restorative Care">
+                                      Restorative Care
+                                    </SelectItem>
+                                    <SelectItem value="Preventive Care">
+                                      Preventive Care
+                                    </SelectItem>
+                                    <SelectItem value="Routine Cleaning">
+                                      Routine Cleaning
+                                    </SelectItem>
+                                    <SelectItem value="Consultation">
+                                      Consultation
+                                    </SelectItem>
+                                    <SelectItem value="Emergency">
+                                      Emergency
+                                    </SelectItem>
                                     <SelectItem value="Other">Other</SelectItem>
                                   </SelectContent>
                                 </Select>
@@ -335,13 +416,15 @@ export default function Booking() {
                           )}
                         />
                       </div>
-                      
+
                       <FormField
                         control={form.control}
                         name="notes"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-white">Additional Notes</FormLabel>
+                            <FormLabel className="text-white">
+                              Additional Notes
+                            </FormLabel>
                             <FormControl>
                               <Textarea
                                 {...field}
@@ -354,13 +437,15 @@ export default function Booking() {
                           </FormItem>
                         )}
                       />
-                      
+
                       <Button
                         type="submit"
                         disabled={createAppointmentMutation.isPending}
                         className="w-full bg-gold hover:bg-warm-gold text-dark-charcoal py-4 font-semibold"
                       >
-                        {createAppointmentMutation.isPending ? "Booking..." : "Confirm Appointment"}
+                        {createAppointmentMutation.isPending
+                          ? "Booking..."
+                          : "Confirm Appointment"}
                       </Button>
                     </form>
                   </Form>

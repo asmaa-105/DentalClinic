@@ -1,4 +1,4 @@
-import type { Appointment } from "@shared/schema";
+import type { Appointment } from "@shared/types";
 
 // Email service configuration
 const EMAIL_SERVICE_API_KEY = process.env.EMAIL_SERVICE_API_KEY || process.env.SENDGRID_API_KEY || "your-email-api-key";

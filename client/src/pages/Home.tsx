@@ -14,7 +14,7 @@ import {
   Clock,
   Shield,
 } from "lucide-react";
-import type { Doctor } from "@shared/schema";
+import type { Doctor } from "@shared/types";
 
 export default function Home() {
   const { data: doctors, isLoading } = useQuery<Doctor[]>({

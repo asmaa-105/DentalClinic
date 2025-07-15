@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { CheckCircle, GraduationCap, Hospital, Award } from "lucide-react";
-import type { Doctor } from "@shared/schema";
+import type { Doctor } from "@shared/types";
 
 export default function Doctor() {
   const { data: doctors, isLoading } = useQuery<Doctor[]>({
