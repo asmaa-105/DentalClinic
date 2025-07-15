@@ -53,7 +53,7 @@ export default function Doctor() {
             <div className="grid md:grid-cols-2 gap-12 items-start">
               <div>
                 <img 
-                  src={doctor.image || "public/attached_assets/3.jpg"} 
+                  src={doctor.image || "client/public/attached_assets/3.jpg"} 
                   alt={doctor.name} 
                   className="rounded-xl shadow-lg w-full h-auto"
                 />

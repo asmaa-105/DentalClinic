@@ -24,6 +24,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { insertAppointmentSchema } from "@/lib/schemas";
 import type { InsertAppointment } from "@shared/types";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { ChevronLeft, ChevronRight } from "lucide-react";
