@@ -83,9 +83,10 @@ export default function Home() {
                   background: "rgba(255, 255, 255, 0.18)",
                   filter: "blur(24px)",
                   zIndex: 1,
-                  left: "99%",
+                  left: "80%",
                   top: "0.1%",
                   transform: "translate(-45%, -80%)",
+                  position: "absolute",
                 }}
               />
               {/* Logo image */}
@@ -94,9 +95,10 @@ export default function Home() {
                 alt="Anas Dental Clinic Logo"
                 className="relative w-[220px] md:w-[200px] lg:w-[240px] h-auto z-10"
                 style={{ filter: "none",
-                  left: "99%",
+                  left: "80%",
                   top: "0.1%",
                   transform: "translate(-45%, -80%)",
+                  position: "absolute",
 
                  }}
               />
