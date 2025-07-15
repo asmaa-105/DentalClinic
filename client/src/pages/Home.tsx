@@ -73,10 +73,10 @@ export default function Home() {
               </div>
             </div>
             {/* Right: Logo with blurred background */}
-            <div className="relative flex-shrink-0 flex items-center justify-end isolate z-10 pr-8">
+            <div className="absolute top-6 right-8 z-20 flex items-center">
               {/* Blurry circular background */}
               <div
-                className="absolute top-6 right-8 z-20"
+                className="absolute inset-0 rounded-full"
                 style={{
                   width: "200px",
                   height: "200px",
