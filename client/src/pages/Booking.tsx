@@ -159,7 +159,7 @@ export default function Booking() {
               Book Your <span className="text-gold">Appointment</span>
             </h1>
             <p className="text-xl text-center text-gray-300 mb-12">
-              Schedule your visit with Dr. Johnson
+              Schedule your visit with Dr. Anas
             </p>
 
             <Card className="bg-dark-grey border-gray-600 shadow-xl">

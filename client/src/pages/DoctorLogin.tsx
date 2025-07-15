@@ -65,7 +65,7 @@ export default function DoctorLogin() {
           playsInline
           className="w-full h-full object-cover opacity-20"
         >
-          <source src="client/public/attached_assets/20250708_1235_Surreal Floating Teeth_simple_compose_01jzmjtaxje1xrch7sj4tcvrjh_1751968458677.mp4" type="video/mp4" />
+          <source src="/attached_assets/20250708_1235_Surreal Floating Teeth_simple_compose_01jzmjtaxje1xrch7sj4tcvrjh_1751968458677.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-dark-charcoal/80 via-dark-charcoal/70 to-dark-charcoal/80" />
       </div>

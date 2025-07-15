@@ -178,7 +178,7 @@ export default function DoctorDashboard() {
           className="w-full h-full object-cover opacity-10"
         >
           <source
-            src="client/public/attached_assets/20250708_1235_Surreal Floating Teeth_simple_compose_01jzmjtaxje1xrch7sj4tcvrjh_1751968458677.mp4"
+            src="/attached_assets/20250708_1235_Surreal Floating Teeth_simple_compose_01jzmjtaxje1xrch7sj4tcvrjh_1751968458677.mp4"
             type="video/mp4"
           />
         </video>
