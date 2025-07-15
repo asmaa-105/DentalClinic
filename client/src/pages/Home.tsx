@@ -37,7 +37,7 @@ export default function Home() {
             style={{ filter: "brightness(0.7) contrast(1.3) saturate(1.2)" }}
           >
             <source
-              src="/attached_assets/20250708_1235_Surreal Floating Teeth_simple_compose_01jzmjtaxje1xrch7sj4tcvrjh_1751968458677.mp4"
+              src="public/attached_assets/20250708_1235_Surreal Floating Teeth_simple_compose_01jzmjtaxje1xrch7sj4tcvrjh_1751968458677.mp4"
               type="video/mp4"
             />
           </video>
@@ -90,7 +90,7 @@ export default function Home() {
               />
               {/* Logo image */}
               <img
-                src="/attached_assets/2.png"
+                src="public/attached_assets/2.png"
                 alt="Anas Dental Clinic Logo"
                 className="relative w-[220px] md:w-[200px] lg:w-[240px] h-auto z-10"
                 style={{ filter: "none",
