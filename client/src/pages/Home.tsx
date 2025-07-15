@@ -76,7 +76,7 @@ export default function Home() {
             <div className="relative flex-shrink-0 flex items-center justify-end isolate z-10 pr-8">
               {/* Blurry circular background */}
               <div
-                className="absolute rounded-full"
+                className="absolute top-6 right-8 z-20"
                 style={{
                   width: "200px",
                   height: "200px",
