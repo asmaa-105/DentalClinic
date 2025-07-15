@@ -176,7 +176,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { username, password } = req.body;
       
       // Simple authentication - in production, use proper password hashing
-      if (username === "doctor" && password === "dental123") {
+      if (username === "anasalhamou" && password === "iloveyouwanasi") {
         res.json({ success: true, message: "Login successful" });
       } else {
         res.status(401).json({ error: "Invalid credentials" });

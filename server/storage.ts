@@ -62,12 +62,12 @@ export class MemStorage implements IStorage {
   private initializeSampleData() {
     const sampleDoctor: Doctor = {
       id: 1,
-      name: "Dr. Sarah Johnson",
-      specialty: "DDS, Cosmetic & General Dentistry",
-      bio: "Dr. Sarah Johnson is a highly skilled dentist with over 15 years of experience in comprehensive dental care. She graduated summa cum laude from Harvard School of Dental Medicine and completed her residency at Massachusetts General Hospital. Dr. Johnson is passionate about providing personalized care to each patient, combining the latest dental technologies with a gentle, compassionate approach.",
-      education: "Harvard School of Dental Medicine - Doctor of Dental Surgery (DDS), Massachusetts General Hospital - General Dentistry Residency, American Board of Cosmetic Dentistry - Board Certified",
+      name: "Dr. Anas Alhamou",
+      specialty: "DDS & General Dentistry",
+      bio: "Dr. Anas Alhamou is a highly experienced General Dentist with a passion for providing quality dental care. He is skilled in diagnosing and treating a variety of dental conditions and has experience working with children, adolescents, and adults, as well as those who suffer from dental anxiety. He is a skilled team player who understands the importance of collaborative care for the best treatment outcomes for patients. Dr. Alhamou is devoted to remaining up to date on the latest techniques to provide the highest level of patient care possible.",
+      education: "Elrazi University - Doctor of Dental Surgery (DDS), Master Endo Professional Program - Credit hours: 180 h, Cosmetic Dentistry Professional Program - Credit hours: 220 h, ICDL - Credit hours: 180 h",
       experience: 15,
-      image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=600"
+      image: "/attached_assets/3.jpg"
     };
     
     this.doctors.set(1, sampleDoctor);

@@ -53,7 +53,7 @@ export default function Doctor() {
             <div className="grid md:grid-cols-2 gap-12 items-start">
               <div>
                 <img 
-                  src={doctor.image || "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=800"} 
+                  src={doctor.image || "/attached_assets/3.jpg"} 
                   alt={doctor.name} 
                   className="rounded-xl shadow-lg w-full h-auto"
                 />
@@ -63,7 +63,7 @@ export default function Doctor() {
                 <p className="text-gold text-xl mb-6">{doctor.specialty}</p>
                 
                 <div className="mb-8">
-                  <h3 className="text-2xl font-semibold mb-4 text-white">About {doctor.name.split(' ')[1]}</h3>
+                  <h3 className="text-2xl font-semibold mb-4 text-white">About</h3>
                   <p className="text-gray-300 mb-6">{doctor.bio}</p>
                 </div>
 
@@ -95,22 +95,22 @@ export default function Doctor() {
                     <div className="flex items-start">
                       <GraduationCap className="text-gold mr-3 mt-1" size={20} />
                       <div>
-                        <p className="text-white font-semibold">Harvard School of Dental Medicine</p>
+                        <p className="text-white font-semibold">ELrazi university</p>
                         <p className="text-gray-300">Doctor of Dental Surgery (DDS)</p>
                       </div>
                     </div>
                     <div className="flex items-start">
                       <Hospital className="text-gold mr-3 mt-1" size={20} />
                       <div>
-                        <p className="text-white font-semibold">Massachusetts General Hospital</p>
-                        <p className="text-gray-300">General Dentistry Residency</p>
+                        <p className="text-white font-semibold">Master Endo Professional</p>
+                        <p className="text-gray-300">Program of 180 credit hours</p>
                       </div>
                     </div>
                     <div className="flex items-start">
                       <Award className="text-gold mr-3 mt-1" size={20} />
                       <div>
-                        <p className="text-white font-semibold">American Board of Cosmetic Dentistry</p>
-                        <p className="text-gray-300">Board Certified</p>
+                        <p className="text-white font-semibold">Cosmetic Dentistry Professional</p>
+                        <p className="text-gray-300">Program of 220 credit hours</p>
                       </div>
                     </div>
                   </div>

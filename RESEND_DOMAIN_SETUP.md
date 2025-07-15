@@ -16,7 +16,7 @@
 **Option C: Get a New Domain** (if you don't have one)
 - Purchase from: Namecheap, GoDaddy, or Google Domains
 - Cost: $10-15/year
-- Example: `elitedentalcare.com`
+- Example: `anasdentalclinic.com `
 
 ### Step 2: Add Domain to Resend Dashboard
 
@@ -99,7 +99,7 @@ Once verified, update the email sender address:
 
 ```javascript
 // In server/email-resend.ts, update the 'from' addresses:
-from: 'Elite Dental Care <noreply@yourdomain.com>'
+from: 'Anas Dental Clinic <noreply@yourdomain.com>'
 ```
 
 ### Step 7: Test Email Delivery

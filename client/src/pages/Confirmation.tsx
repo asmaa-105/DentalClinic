@@ -33,14 +33,14 @@ export default function Confirmation() {
     const endTime = endDate.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
     
     const title = `Dental Appointment - ${appointment.reasonForVisit}`;
-    const description = `Appointment with Dr. Sarah Johnson at Elite Dental Care\\n\\nPatient: ${appointment.patientName}\\nType: ${appointment.reasonForVisit}\\nPhone: ${appointment.patientPhone}\\nEmail: ${appointment.patientEmail}`;
-    const location = 'Elite Dental Care, 123 Dental Street, Medical Plaza, Suite 456, Healthville, HV 12345';
+    const description = `Appointment with Dr. Anas Alhamou at Anas Dental Clinic\\n\\nPatient: ${appointment.patientName}\\nType: ${appointment.reasonForVisit}\\nPhone: ${appointment.patientPhone}\\nEmail: ${appointment.patientEmail}`;
+    const location = 'Anas Dental Clinic, Al-Shahbaa District, Aleppo Road, Hama, Syria';
     
     return `data:text/calendar;charset=utf8,BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Elite Dental Care//Appointment//EN
+PRODID:-//Anas Dental Clinic//Appointment//EN
 BEGIN:VEVENT
-UID:${appointment.id}@elitedentalcare.com
+UID:${appointment.id}@anasdentalclinic.com
 DTSTART:${startTime}
 DTEND:${endTime}
 SUMMARY:${title}
@@ -154,7 +154,7 @@ END:VCALENDAR`;
                           <User className="text-gold mr-2" size={20} />
                           <span className="text-gray-300">Doctor:</span>
                         </div>
-                        <span className="text-white font-medium">Dr. Sarah Johnson</span>
+                        <span className="text-white font-medium">Dr. Anas Alhamou</span>
                       </div>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
@@ -170,7 +170,7 @@ END:VCALENDAR`;
                           <MapPin className="text-gold mr-2" size={20} />
                           <span className="text-gray-300">Location:</span>
                         </div>
-                        <span className="text-white font-medium">Elite Dental Care</span>
+                        <span className="text-white font-medium">Anas Dental Clinic</span>
                       </div>
                     </div>
                   </CardContent>

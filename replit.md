@@ -117,7 +117,7 @@ This is a modern, responsive dental clinic website built with React, TypeScript,
 - **DATABASE_URL**: PostgreSQL connection string
 - **NODE_ENV**: Environment mode (development/production)
 - **Email Service**: Gmail SMTP for appointment confirmations and notifications
-- **Doctor Authentication**: Simple credential-based access (username: doctor, password: dental123)
+- **Doctor Authentication**: Simple credential-based access (username: anasalhamou, password: iloveyouwanasi)
 - **Firebase**: Optional integration for enhanced features
 
 ## Changelog
